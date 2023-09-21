@@ -31,7 +31,37 @@
 
             <div class="panel-body">
                 <form role="form">
+                    <form role="form">
+                        <hr/>
+                        <br/>
+                        <div class="form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                            <input type="text" class="form-control" placeholder="用户名" v-model="user.name"/>
+                        </div>
+                        <div class="form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" placeholder=" 密码" v-model="user.password"/>
+                        </div>
+                        <h5 style="color: white">请选择角色</h5>
+                        <div class="form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <select class="form-control" v-model="user.level">
+                                <option value="" selected="">请选择</option>
+                                <option value="1">管理员</option>
+                                <option value="2">教师</option>
+                                <option value="3">学生</option>
+                            </select>
+                        </div>
 
+                        <div style="text-align: center" >
+                            <a href="javascript:void(0)" class="btn btn-primary" @click="login">登录</a>
+                        </div>
+                        <hr/>
+                        <div style="text-align: center">
+                            <span style="color: white">未注册 ?</span> <a href="register.html" style="color: yellow">点击这里 </a>
+                        </div>
+
+                    </form>
                 </form>
             </div>
 
@@ -53,6 +83,25 @@
 
         },
         methods: {
+            login(){
+                axios.post('/login', this.user).then(res=>{
+                    if (res.data.code == '0'){
+                        let user = res.data.data;
+                        localStorage.setItem("user", JSON.stringify(user))
+                        if (user&&user.level&&user.level==1){
+                            window.location = "/end/page/accountAdminInfo.html"
+                        }
+                        if (user&&user.level&&user.level==2){
+                            window.location = "/end/page/accountTeacherInfo.html"
+                        }
+                        if (user&&user.level&&user.level==3){
+                            window.location = "/end/page/accountStudentInfo.html"
+                        }
+                    }else {
+                        alert(res.data.msg)
+                    }
+                })
+            }
         }
     });
 </script>
