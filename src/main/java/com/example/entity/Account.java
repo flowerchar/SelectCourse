@@ -30,6 +30,6 @@ public class Account {
     @Column(name = "age")
     private String age;
 
-    @Column(name = "levl")
+    @Column(name = "level")
     private Integer level;
 }

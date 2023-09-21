@@ -4,12 +4,10 @@ package com.example.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Result;
 import com.example.entity.Account;
+import com.example.entity.AdminInfo;
 import com.example.service.AdminInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,4 +32,18 @@ public class AccountController {
         request.getSession().setAttribute("user", loginUser);
         return Result.success(loginUser);
     }
+
+    @GetMapping("/getUser")
+    public Result getUser(HttpServletRequest request){
+        Account user = (Account) request.getSession().getAttribute("user");
+        Integer level = user.getLevel();
+        Account loginUser = new Account();
+        if (1==level){
+            AdminInfo adminInfo = adminInfoService.findById(user.getId());
+            return Result.success(adminInfo);
+        }
+
+        return Result.success(new Account());
+    }
+
 }

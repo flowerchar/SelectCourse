@@ -23,4 +23,12 @@ public class AdminInfoService {
         }
         return adminInfo;
     }
+
+    public AdminInfo findById(Long id) {
+        return adminInfoDao.selectByPrimaryKey(id);
+    }
+
+    public void update(AdminInfo adminInfo) {
+        adminInfoDao.updateByPrimaryKeySelective(adminInfo);
+    }
 }
