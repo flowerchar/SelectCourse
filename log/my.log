@@ -195,3 +195,30 @@
 2023-09-21 17:47:15.273  INFO 6812 --- [http-nio-8888-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-09-21 17:47:15.283  INFO 6812 --- [http-nio-8888-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
 2023-09-21 17:48:33.199  INFO 6812 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2023-09-21 17:48:37.491  INFO 14348 --- [main] com.example.Application                  : Starting Application on DESKTOP-0ECC9HG with PID 14348 (D:\githubRep\SelectCourse\target\classes started by DELL in D:\githubRep\SelectCourse)
+2023-09-21 17:48:37.499  INFO 14348 --- [main] com.example.Application                  : No active profile set, falling back to default profiles: default
+2023-09-21 17:48:38.145  WARN 14348 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.example]' package. Please check your configuration.
+2023-09-21 17:48:39.935  INFO 14348 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8888 (http)
+2023-09-21 17:48:39.953  INFO 14348 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-09-21 17:48:39.954  INFO 14348 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/9.0.12
+2023-09-21 17:48:39.961  INFO 14348 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.28] using APR version [1.7.0].
+2023-09-21 17:48:39.962  INFO 14348 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2023-09-21 17:48:39.962  INFO 14348 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-09-21 17:48:39.965  INFO 14348 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1k  25 Mar 2021]
+2023-09-21 17:48:40.056  INFO 14348 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-09-21 17:48:40.057  INFO 14348 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2519 ms
+2023-09-21 17:48:40.085  INFO 14348 --- [main] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2023-09-21 17:48:40.089  INFO 14348 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2023-09-21 17:48:40.089  INFO 14348 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2023-09-21 17:48:40.089  INFO 14348 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'formContentFilter' to: [/*]
+2023-09-21 17:48:40.090  INFO 14348 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2023-09-21 17:48:40.546  INFO 14348 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2023-09-21 17:48:40.864  INFO 14348 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8888 (http) with context path ''
+2023-09-21 17:48:40.869  INFO 14348 --- [main] com.example.Application                  : Started Application in 3.972 seconds (JVM running for 4.474)
+2023-09-21 17:48:40.871  INFO 14348 --- [main] com.example.common.config.OpenBrowser    : 项目启动成功……
+2023-09-21 17:48:41.237  INFO 14348 --- [http-nio-8888-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-09-21 17:48:41.238  INFO 14348 --- [http-nio-8888-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-09-21 17:48:41.245  INFO 14348 --- [http-nio-8888-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2023-09-21 17:49:54.828  INFO 14348 --- [http-nio-8888-exec-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-09-21 17:49:55.033  INFO 14348 --- [http-nio-8888-exec-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-09-21 17:49:55.987  WARN 14348 --- [http-nio-8888-exec-4] o.a.c.util.SessionIdGeneratorBase        : Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [870] milliseconds.
