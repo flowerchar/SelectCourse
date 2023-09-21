@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>登陆页面</title>
+
+    <link href="../css/bootstrap.css" rel="stylesheet"/>
+    <link href="../css/font-awesome.css" rel="stylesheet"/>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .table th, .table td {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+    </style>
+</head>
+<body style="background:url('../img/bg.jpg') no-repeat; background-size: cover;">
+<div id="app" class="container" v-cloak>
+    <div class="row text-center " style="padding-top:120px;">
+        <div class="col-md-12">
+           <h2 style="color: white">欢迎登录学生选课管理系统</h2>
+        </div>
+    </div>
+    <div class="row ">
+
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+
+            <div class="panel-body">
+                <form role="form">
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="../js/vue2.6.11/vue.min.js"></script>
+<script src="../js/vue2.6.11/axios.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            user: {}
+
+        },
+        created: function () {
+
+        },
+        methods: {
+        }
+    });
+</script>
+</body>
+</html>
