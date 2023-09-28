@@ -15,4 +15,6 @@ public interface AdminInfoDao extends Mapper<AdminInfo> {
     //这里不用Param
     AdminInfo findByNameAndPassword(@Param("name") String name,@Param("password") String password);
 
+    @Select("select * from admin_info where name=#{name}")
+    AdminInfo findByName(String name);
 }
