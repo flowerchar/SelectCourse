@@ -51,7 +51,13 @@ public class AccountController {
         Account loginUser = new Account();
         if (1 == level) {
             AdminInfo adminInfo = adminInfoService.findById(user.getId());
+//            adminInfo.setPassword("");
             return Result.success(adminInfo);
+        }
+        if (2 == level) {
+            TeacherInfo teacherInfo = teacherInfoService.findById(user.getId());
+//            teacherInfo.setPassword("");
+            return Result.success(teacherInfo);
         }
 
         return Result.success(new Account());

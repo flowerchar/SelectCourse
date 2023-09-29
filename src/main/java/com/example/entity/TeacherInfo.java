@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class TeacherInfo extends Account{
 
-    @Column(name = "titlr")
+    @Column(name = "title")
     private String title;
 
     @Column(name = "majorID")

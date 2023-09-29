@@ -38,4 +38,12 @@ public class TeacherInfoService {
         }
         return teacherInfo;
     }
+
+    public TeacherInfo findById(Long id) {
+        return teacherInfoDao.selectByPrimaryKey(id);
+    }
+
+    public void update(TeacherInfo teacherInfo) {
+        teacherInfoDao.updateByPrimaryKeySelective(teacherInfo);
+    }
 }
