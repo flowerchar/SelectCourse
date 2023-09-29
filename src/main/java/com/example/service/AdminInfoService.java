@@ -6,6 +6,8 @@ import com.example.dao.AdminInfoDao;
 import com.example.entity.Account;
 import com.example.entity.AdminInfo;
 import com.example.exception.CustomException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +55,17 @@ public class AdminInfoService {
 
     public void deleteById(Long id) {
         adminInfoDao.deleteByPrimaryKey(id);
+    }
+
+    public PageInfo<AdminInfo> findPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<AdminInfo> infos = adminInfoDao.selectAll();
+        return PageInfo.of(infos);
+    }
+
+    public PageInfo<AdminInfo> findPageName(Integer pageNum, Integer pageSize, String name) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<AdminInfo> infos = adminInfoDao.findByNamePage(name);
+        return PageInfo.of(infos);
     }
 }

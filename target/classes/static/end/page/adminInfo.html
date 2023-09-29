@@ -123,7 +123,7 @@
                                 <div class="table-responsive">
                                     <div class="nx-table-header">
                                         <button class="btn btn-sm btn-primary" @click="add()">新增</button>
-                                        <input type="text" placeholder="请输入搜索内容">
+                                        <input type="text" placeholder="请输入搜索内容" v-model="search" @keyup.enter="loadTable(1)">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover">
@@ -149,6 +149,26 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item" v-bind:class="{disable:preActive}">
+                                                <a class="page-link" href="javascript:void(0)"
+                                                   v-on:click="loadTable(pageInfo.hasPreviousPage?(pageInfo.pageNum-1):pageInfo.pageNum)">上一页</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="javascript:void(0)" v-if="pageInfo.pageNum>1" v-on:click="loadTable(pageInfo.pageNum-1)">{{pageInfo.pageNum-1}}</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" aria-disabled="true" href="javascript:void(0)">{{pageInfo.pageNum}}</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="javascript:void(0)" v-if="pageInfo.hasNextPage" v-on:click="loadTable(pageInfo.pageNum+1)">{{pageInfo.pageNum+1}}</a>
+                                            </li>
+                                            <li class="page-item" v-bind:class="{disable:nextActive}">
+                                                <a class="page-link" href="javascript:void(0)"  v-on:click="loadTable(pageInfo.hasNextPage?(pageInfo.pageNum+1):pageInfo.pageNum)">下一页</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +256,11 @@
         data: {
             user: {},
             entity: {},
-            tableData: []
+            tableData: [],
+            pageInfo:{},
+            preActive:false,
+            nextActive:false,
+            search:null
         },
         created: function () {
             const menuHeight = document.getElementById("main-menu").getElementsByTagName('li').length * 53;
@@ -244,19 +268,35 @@
             document.getElementById("nav-id").style.height = (menuHeight > bodyHeight ? menuHeight : bodyHeight) + 'px';
             this.user = JSON.parse(localStorage.getItem('user'));
 
-            this.loadTable()
-
+            this.loadTable(1)
+            // this.loadTablePage()
 
         },
         methods: {
-            loadTable(){
-                axios.get('/adminInfo').then(res=>{
-                    if (res.data.code==='0'){
-                        this.tableData = res.data.data
-                    }else {
-                        msg("error", res.data.msg)
-                    }
-                })
+            loadTable(pageNum){
+                if (this.search){
+                    axios.get('/adminInfo/page/'+this.search+'?pageNum='+pageNum+'&pageSize=5').then(res=>{
+                        if (res.data.code==='0'){
+                            this.tableData = res.data.data.list
+                            this.pageInfo = res.data.data
+                            this.preActive = !(this.pageInfo.hasPreviousPage)
+                            this.nextActive = !(this.pageInfo.hasNextPage)
+                        }else {
+                            msg("error", res.data.msg)
+                        }
+                    })
+                }else {
+                    axios.get('/adminInfo/page?pageNum='+pageNum+'&pageSize=5').then(res=>{
+                        if (res.data.code==='0'){
+                            this.tableData = res.data.data.list
+                            this.pageInfo = res.data.data
+                            this.preActive = !(this.pageInfo.hasPreviousPage)
+                            this.nextActive = !(this.pageInfo.hasNextPage)
+                        }else {
+                            msg("error", res.data.msg)
+                        }
+                    })
+                }
             },
             del(id){
                 let _this = this
@@ -292,7 +332,7 @@
                         if (res.data.code==='0'){
                             $('#mod').modal('hide')
                             msg("success", "修改成功！！")
-                            this.loadTable()
+                            this.loadTable(1)
                         }else {
                             msg('error', res.data.msg)
                         }
@@ -302,7 +342,7 @@
                         if (res.data.code==='0'){
                             $('#mod').modal('hide')
                             msg("success", "新增成功！！")
-                            this.loadTable()
+                            this.loadTable(1)
                         }else {
                             msg("error", res.data.msg)
                         }
