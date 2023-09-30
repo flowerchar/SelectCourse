@@ -123,17 +123,32 @@
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <div class="nx-table-header">
-                                        <button class="btn btn-sm btn-primary">新增</button>
+                                        <button class="btn btn-sm btn-primary" @click="add">新增</button>
                                         <input type="text" placeholder="请输入搜索内容">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
+                                            <th>用户名</th>
+                                            <th>性别</th>
+                                            <th>年龄</th>
+                                            <th>职称</th>
+                                            <th>专业</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-for="obj in tableData">
                                         <tr>
+                                            <td>{{obj.name}}</td>
+                                            <td>{{obj.sex}}</td>
+                                            <td>{{obj.age}}</td>
+                                            <td>{{obj.title}}</td>
+                                            <td>{{obj.majorID}}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" @click="init(obj)">编辑</button>
+                                                <button class="btn btn-sm btn-danger" @click="del(obj.id)">删除</button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -159,7 +174,35 @@
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <input type="hidden" id="id" name="id" v-model="entity.id">
-
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">姓名</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="entity.name" placeholder="请输入姓名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">性别</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline">
+                                    <input type="radio" value="男" v-model="entity.sex"> 男
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="女" v-model="entity.sex"> 女
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">年龄</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="entity.age" placeholder="请输入年龄">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">职称</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="entity.title" placeholder="请输入职称">
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -195,7 +238,8 @@
         el: '#wrapper',
         data: {
             user: {},
-            entity: {}
+            entity: {},
+            tableData:[]
         },
         created: function () {
             const menuHeight = document.getElementById("main-menu").getElementsByTagName('li').length * 53;
@@ -203,12 +247,70 @@
             document.getElementById("nav-id").style.height = (menuHeight > bodyHeight ? menuHeight : bodyHeight) + 'px';
             this.user = JSON.parse(localStorage.getItem('user'));
 
-
+            this.loadTable()
 
         },
         methods: {
-
-
+            add(){
+                this.entity={}
+                $('#mod').modal('show')
+            },
+            del(id){
+                let _this = this
+                this.$confirm('确认删除？','系统提示',{
+                    confirmButtonText:'确定',
+                    cancelButtonText:'取消',
+                    cancelButtonClass:'btn-custom-cancel',
+                    type:'warning'
+                }).then(function (){
+                    axios.delete('/teacherInfo/'+id).then(res=>{
+                        if (res.data.code==='0'){
+                            msg("success","删除成功")
+                            _this.loadTable()
+                        }else {
+                            msg("error",res.data.msg)
+                        }
+                    })
+                }).catch(function (){
+                    console.log('cancle')
+                })
+            },
+            init(obj){
+                this.entity=JSON.parse(JSON.stringify(obj))
+                $('#mod').modal('show')
+            },
+            update(){
+                if (this.entity.id){
+                    axios.put('/teacherInfo', this.entity).then(res=>{
+                        if (res.data.code==='0'){
+                            $('#mod').modal('hide')
+                            msg("success","编辑成功")
+                            this.loadTable()
+                        }else {
+                            msg("error",res.data.msg)
+                        }
+                    })
+                }else {
+                    axios.post('/teacherInfo', this.entity).then(res=>{
+                        if (res.data.code==='0'){
+                            $('#mod').modal('hide')
+                            msg("success","新增成功")
+                            this.loadTable()
+                        }else {
+                            msg("error",res.data.msg)
+                        }
+                    })
+                }
+            },
+            loadTable(){
+                axios.get('/teacherInfo').then(res=>{
+                    if (res.data.code==='0'){
+                        this.tableData=res.data.data
+                    }else {
+                        msg("error", res.data.msg)
+                    }
+                })
+            },
             logout() {
 
             }

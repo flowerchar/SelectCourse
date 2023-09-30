@@ -22,4 +22,22 @@ public class TeacherInfoController {
         teacherInfoService.update(teacherInfo);
         return Result.success();
     }
+
+    @GetMapping
+    public Result findAll(){
+        List<TeacherInfo> list = teacherInfoService.findAll();
+        return Result.success(list);
+    }
+
+    @PostMapping
+    public Result add(@RequestBody TeacherInfo teacherInfo){
+        teacherInfoService.add(teacherInfo);
+        return Result.success();
+    }
+
+    @DeleteMapping("/{id}")
+    public Result deleteById(@PathVariable Long id){
+        teacherInfoService.deleteById(id);
+        return Result.success();
+    }
 }

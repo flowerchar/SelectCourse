@@ -22,14 +22,14 @@ public class TeacherInfoService {
     private TeacherInfoDao teacherInfoDao;
 
 
-    public void register(TeacherInfo teacherInfo) {
-        TeacherInfo info = teacherInfoDao.findByName(teacherInfo.getName());
-        if (ObjectUtil.isNotEmpty(info)){
-            throw new CustomException(ResultCode.USER_EXIST_ERROR);
-        }
-
-        teacherInfoDao.insertSelective(teacherInfo);
-    }
+//    public void register(TeacherInfo teacherInfo) {
+//        TeacherInfo info = teacherInfoDao.findByName(teacherInfo.getName());
+//        if (ObjectUtil.isNotEmpty(info)){
+//            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+//        }
+//
+//        teacherInfoDao.insertSelective(teacherInfo);
+//    }
 
     public Account login(String name, String password) {
         TeacherInfo teacherInfo = teacherInfoDao.findByNameAndPass(name, password);
@@ -45,5 +45,25 @@ public class TeacherInfoService {
 
     public void update(TeacherInfo teacherInfo) {
         teacherInfoDao.updateByPrimaryKeySelective(teacherInfo);
+    }
+
+    public List<TeacherInfo> findAll() {
+        return teacherInfoDao.selectAll();
+    }
+
+    public void add(TeacherInfo teacherInfo) {
+        TeacherInfo info = teacherInfoDao.findByName(teacherInfo.getName());
+        if (ObjectUtil.isNotEmpty(info)){
+            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+        }
+        if (ObjectUtil.isEmpty(teacherInfo.getPassword())){
+            teacherInfo.setPassword("123456");
+        }
+        teacherInfo.setLevel(2);
+        teacherInfoDao.insertSelective(teacherInfo);
+    }
+
+    public void deleteById(Long id) {
+        teacherInfoDao.deleteByPrimaryKey(id);
     }
 }
