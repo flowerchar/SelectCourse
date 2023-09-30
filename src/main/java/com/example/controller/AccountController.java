@@ -5,8 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Result;
 import com.example.entity.Account;
 import com.example.entity.AdminInfo;
+import com.example.entity.StudentInfo;
 import com.example.entity.TeacherInfo;
 import com.example.service.AdminInfoService;
+import com.example.service.StudentInfoService;
 import com.example.service.TeacherInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class AccountController {
     private AdminInfoService adminInfoService;
     @Autowired
     private TeacherInfoService teacherInfoService;
+    @Autowired
+    private StudentInfoService studentInfoService;
 
     @PostMapping("/login")
     public Result login(@RequestBody Account user, HttpServletRequest request) {
@@ -37,9 +41,9 @@ public class AccountController {
         if (2 == level) {
             loginUser = teacherInfoService.login(user.getName(), user.getPassword());
         }
-//        if (1 == level) {
-//            loginUser = adminInfoService.login(user.getName(), user.getPassword());
-//        }
+        if (3 == level) {
+            loginUser = studentInfoService.login(user.getName(), user.getPassword());
+        }
         request.getSession().setAttribute("user", loginUser);
         return Result.success(loginUser);
     }
@@ -59,7 +63,11 @@ public class AccountController {
 //            teacherInfo.setPassword("");
             return Result.success(teacherInfo);
         }
-
+        if (3 == level) {
+            StudentInfo studentInfo = studentInfoService.findById(user.getId());
+//            teacherInfo.setPassword("");
+            return Result.success(studentInfo);
+        }
         return Result.success(new Account());
     }
 
@@ -75,6 +83,17 @@ public class AccountController {
             BeanUtils.copyProperties(user, teacherInfo);
             teacherInfoService.register(teacherInfo);
         }
+        if (3==level){
+            StudentInfo studentInfo = new StudentInfo();
+            BeanUtils.copyProperties(user, studentInfo);
+            studentInfoService.register(studentInfo);
+        }
+        return Result.success();
+    }
+
+    @GetMapping("/logout")
+    public Result logout(HttpServletRequest request){
+        request.getSession().setAttribute("user",null);
         return Result.success();
     }
 }
