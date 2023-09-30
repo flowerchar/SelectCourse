@@ -19,4 +19,7 @@ public interface TeacherInfoDao extends Mapper<TeacherInfo> {
 
     @Select("select * from teacher_info where name=#{name} and password =#{password}")
     TeacherInfo findByNameAndPass(String name, String password);
+
+    @Select("select * from teacher_info where name like concat('%',#{search},'%')")
+    List<TeacherInfo> findByLikeName(String search);
 }

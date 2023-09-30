@@ -151,7 +151,7 @@
                                     </table>
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
-                                            <li class="page-item" v-bind:class="{disable:preActive}">
+                                            <li class="page-item" v-bind:class="{disabled:preActive}">
                                                 <a class="page-link" href="javascript:void(0)"
                                                    v-on:click="loadTable(pageInfo.hasPreviousPage?(pageInfo.pageNum-1):pageInfo.pageNum)">上一页</a>
                                             </li>
@@ -164,7 +164,7 @@
                                             <li class="page-item">
                                                 <a class="page-link" href="javascript:void(0)" v-if="pageInfo.hasNextPage" v-on:click="loadTable(pageInfo.pageNum+1)">{{pageInfo.pageNum+1}}</a>
                                             </li>
-                                            <li class="page-item" v-bind:class="{disable:nextActive}">
+                                            <li class="page-item" v-bind:class="{disabled:nextActive}">
                                                 <a class="page-link" href="javascript:void(0)"  v-on:click="loadTable(pageInfo.hasNextPage?(pageInfo.pageNum+1):pageInfo.pageNum)">下一页</a>
                                             </li>
                                         </ul>

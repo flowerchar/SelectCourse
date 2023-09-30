@@ -40,4 +40,16 @@ public class TeacherInfoController {
         teacherInfoService.deleteById(id);
         return Result.success();
     }
+
+    @GetMapping("/page")
+    public Result findPage(Integer pageNum, Integer pageSize){
+        PageInfo<TeacherInfo> pageInfo = teacherInfoService.findPage(pageNum, pageSize);
+        return Result.success(pageInfo);
+    }
+
+    @GetMapping("/{search}")
+    public Result findPageSearch(@PathVariable String search,Integer pageNum, Integer pageSize){
+        PageInfo<TeacherInfo> pageInfo = teacherInfoService.findPageSearch(search, pageNum, pageSize);
+        return Result.success(pageInfo);
+    }
 }
