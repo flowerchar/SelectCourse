@@ -86,7 +86,7 @@ public class AccountController {
         if (3==level){
             StudentInfo studentInfo = new StudentInfo();
             BeanUtils.copyProperties(user, studentInfo);
-            studentInfoService.register(studentInfo);
+            studentInfoService.add(studentInfo);
         }
         return Result.success();
     }

@@ -30,13 +30,13 @@ public class StudentInfoService {
         return studentInfo;
     }
 
-    public void register(StudentInfo studentInfo) {
-        StudentInfo info = studentInfoDao.findByName(studentInfo.getName());
-        if (ObjectUtil.isNotEmpty(info)){
-            throw new CustomException(ResultCode.USER_EXIST_ERROR);
-        }
-        studentInfoDao.insertSelective(studentInfo);
-    }
+//    public void register(StudentInfo studentInfo) {
+//        StudentInfo info = studentInfoDao.findByName(studentInfo.getName());
+//        if (ObjectUtil.isNotEmpty(info)){
+//            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+//        }
+//        studentInfoDao.insertSelective(studentInfo);
+//    }
 
     public StudentInfo findById(Long id) {
         return studentInfoDao.selectByPrimaryKey(id);
@@ -44,5 +44,25 @@ public class StudentInfoService {
 
     public void update(StudentInfo studentInfo) {
         studentInfoDao.updateByPrimaryKeySelective(studentInfo);
+    }
+
+    public List<StudentInfo> findAll() {
+
+        return studentInfoDao.selectAll();
+    }
+
+    public void add(StudentInfo studentInfo) {
+        StudentInfo info = studentInfoDao.findByName(studentInfo.getName());
+        if (ObjectUtil.isNotEmpty(info)){
+            throw new CustomException(ResultCode.USER_EXIST_ERROR);
+        }
+        if (ObjectUtil.isEmpty(studentInfo.getPassword())){
+            studentInfo.setPassword("123456");
+        }
+        studentInfoDao.insertSelective(studentInfo);
+    }
+
+    public void deleteById(Long id) {
+        studentInfoDao.deleteByPrimaryKey(id);
     }
 }
