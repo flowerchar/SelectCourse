@@ -122,17 +122,28 @@
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <div class="nx-table-header">
-                                        <button class="btn btn-sm btn-primary">新增</button>
-                                        <input type="text" placeholder="请输入搜索内容">
+                                        <button class="btn btn-sm btn-primary" @click="add">新增</button>
+                                        <input type="text" placeholder="请输入搜索内容" @keyup.enter="loadTable" v-model="search">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                         <tr>
+                                            <th>专业名称</th>
+                                            <th>系名</th>
+                                            <th>所属学院</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-for="obj in tableData">
                                         <tr>
+                                            <td>{{obj.name}}</td>
+                                            <td>{{obj.department}}</td>
+                                            <td>{{obj.collegeName}}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" @click="init(obj)">编辑</button>
+                                                <button class="btn btn-sm btn-danger" @click="del(obj.id)">删除</button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -158,12 +169,31 @@
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <input type="hidden" id="id" name="id" v-model="entity.id">
-
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">专业名称</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="entity.name" placeholder="请输入专业名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">系名</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="entity.department" placeholder="请输入系名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所属学院</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" v-model="entity.collegeID">
+                                    <option v-for="item in collegeObjs" :value="item.id">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="entity={}">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-primary" @click="update">保存</button>
                 </div>
             </div>
         </div>
@@ -194,7 +224,10 @@
         el: '#wrapper',
         data: {
             user: {},
-            entity: {}
+            entity: {},
+            collegeObjs:[],
+            tableData:[],
+            search:null
         },
         created: function () {
             const menuHeight = document.getElementById("main-menu").getElementsByTagName('li').length * 53;
@@ -202,12 +235,91 @@
             document.getElementById("nav-id").style.height = (menuHeight > bodyHeight ? menuHeight : bodyHeight) + 'px';
             this.user = JSON.parse(localStorage.getItem('user'));
 
-
+            this.loadCollege()
+            this.loadTable()
         },
         methods: {
-
+            add(){
+              this.entity={}
+              $("#mod").modal("show")
+            },
+            init(obj){
+                this.entity=obj
+                $("#mod").modal("show")
+            },
             logout() {
-
+                logout()
+            },
+            loadTable(){
+                if (this.search){
+                    axios.get("/majorInfo/"+this.search).then(res=>{
+                        if(res.data.code==='0'){
+                            this.tableData = res.data.data
+                        }else {
+                            msg("error", res.data.msg)
+                        }
+                    })
+                }else {
+                    axios.get("/majorInfo").then(res=>{
+                        if(res.data.code==='0'){
+                            this.tableData = res.data.data
+                        }else {
+                            msg("error", res.data.msg)
+                        }
+                    })
+                }
+            },
+            update(){
+                if (this.entity.id){
+                    axios.put("/majorInfo", this.entity).then(res=>{
+                        if(res.data.code==='0'){
+                            msg("success", "更新成功")
+                            $("#mod").modal("hide")
+                            this.loadTable()
+                        }else {
+                            msg("error", res.data.msg)
+                        }
+                    })
+                }else {
+                    axios.post("/majorInfo", this.entity).then(res=>{
+                        if(res.data.code==='0'){
+                            msg("success", "新增成功")
+                            $("#mod").modal("hide")
+                            this.loadTable()
+                        }else {
+                            msg("error", res.data.msg)
+                        }
+                    })
+                }
+            },
+            del(id){
+                let _this = this
+                this.$confirm('确认删除？','系统提示',{
+                    confirmButtonText:'确定',
+                    cancelButtonText:'取消',
+                    cancelButtonClass:'btn-custom-cancel',
+                    type:'warning'
+                }).then(function (){
+                    axios.delete('/majorInfo/'+id).then(res=>{
+                        if (res.data.code==='0'){
+                            msg("success","删除成功")
+                            _this.loadTable()
+                        }else {
+                            msg("error",res.data.msg)
+                        }
+                    })
+                }).catch(function (){
+                    console.log('cancle')
+                })
+            },
+            loadCollege(){
+                axios.get("/collegeInfo").then(res=>{
+                    if (res.data.code==='0'){
+                        this.collegeObjs = res.data.data
+                    }else {
+                        msg("error",res.data.msg)
+                    }
+                })
             }
         }
     })
