@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "student_info")
 @Data
@@ -22,5 +23,6 @@ public class StudentInfo extends Account{
     @Column(name = "credit")
     private Integer credit;
 
-
+    @Transient
+    private String collegeName;
 }

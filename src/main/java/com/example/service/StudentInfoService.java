@@ -3,9 +3,11 @@ package com.example.service;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.ResultCode;
 import com.example.dao.AdminInfoDao;
+import com.example.dao.CollegeInfoDao;
 import com.example.dao.StudentInfoDao;
 import com.example.entity.Account;
 import com.example.entity.AdminInfo;
+import com.example.entity.CollegeInfo;
 import com.example.entity.StudentInfo;
 import com.example.exception.CustomException;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +22,8 @@ public class StudentInfoService {
 
     @Autowired
     private StudentInfoDao studentInfoDao;
+    @Autowired
+    private CollegeInfoDao collegeInfoDao;
 
     public Account login(String name, String password) {
 
@@ -47,8 +51,15 @@ public class StudentInfoService {
     }
 
     public List<StudentInfo> findAll() {
-
-        return studentInfoDao.selectAll();
+        List<StudentInfo> list = studentInfoDao.selectAll();
+        for (StudentInfo studentInfo:
+             list) {
+            if (ObjectUtil.isNotEmpty(studentInfo.getCollegeID())){
+                CollegeInfo collegeInfo = collegeInfoDao.selectByPrimaryKey(studentInfo.getCollegeID());
+                studentInfo.setCollegeName(collegeInfo.getName());
+            }
+        }
+        return list;
     }
 
     public void add(StudentInfo studentInfo) {

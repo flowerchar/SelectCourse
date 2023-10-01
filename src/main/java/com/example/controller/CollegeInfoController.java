@@ -38,4 +38,10 @@ public class CollegeInfoController {
         collegeInfoService.deleteById(id);
         return Result.success();
     }
+
+    @GetMapping("/{search}")
+    public Result find(@PathVariable String search){
+        List<CollegeInfo> list = collegeInfoService.find(search);
+        return Result.success(list);
+    }
 }

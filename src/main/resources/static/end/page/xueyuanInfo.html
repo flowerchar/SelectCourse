@@ -123,7 +123,7 @@
                                 <div class="table-responsive">
                                     <div class="nx-table-header">
                                         <button class="btn btn-sm btn-primary" @click="add">新增</button>
-                                        <input type="text" placeholder="请输入搜索内容">
+                                        <input type="text" placeholder="请输入搜索学院名称" @keyup.enter="loadTable" v-model="search">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover">
@@ -223,7 +223,8 @@
         data: {
             user: {},
             entity: {},
-            tableData:[]
+            tableData:[],
+            search:null
         },
         created: function () {
             const menuHeight = document.getElementById("main-menu").getElementsByTagName('li').length * 53;
@@ -268,13 +269,23 @@
                 })
             },
             loadTable(){
-              axios.get("/collegeInfo").then(res=>{
-                  if (res.data.code==='0'){
-                        this.tableData=res.data.data
-                  }else {
-                      msg("error", res.data.msg)
-                  }
-              })
+              if (this.search){
+                  axios.get("/collegeInfo/"+this.search).then(res=>{
+                      if (res.data.code==='0'){
+                          this.tableData=res.data.data
+                      }else {
+                          msg("error", res.data.msg)
+                      }
+                  })
+              }else {
+                  axios.get("/collegeInfo").then(res=>{
+                      if (res.data.code==='0'){
+                          this.tableData=res.data.data
+                      }else {
+                          msg("error", res.data.msg)
+                      }
+                  })
+              }
             },
             update(){
                 if (this.entity.id){

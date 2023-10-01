@@ -35,4 +35,9 @@ public class CollegeInfoService {
     public void deleteById(Long id) {
         collegeInfoDao.deleteByPrimaryKey(id);
     }
+
+    public List<CollegeInfo> find(String search) {
+
+        return collegeInfoDao.find(search);
+    }
 }
