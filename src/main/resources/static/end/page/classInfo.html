@@ -155,7 +155,7 @@
                                             <td v-if="user.level!==2">
                                                 <button class="btn btn-sm btn-primary" @click="init(obj)"  v-if="user.level===1">编辑</button>
                                                 <button class="btn btn-sm btn-danger" @click="del(obj.id)"  v-if="user.level===1">删除</button>
-                                                <button class="btn btn-sm btn-primary"   v-if="user.level===3">选课</button>
+                                                <button class="btn btn-sm btn-primary" @click="select(obj)" v-if="user.level===3" :disabled="obj.selectedNum===obj.requiredNum">选课</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -286,6 +286,16 @@
             this.loadTable()
         },
         methods: {
+            select(obj){
+                axios.post("/courseInfo/select", obj).then(res=>{
+                    if (res.data.code==='0'){
+                        msg("success","选课成功")
+                        this.loadTable()
+                    }else {
+                        msg("error",res.data.msg)
+                    }
+                })
+            },
             loadTable(){
                 if (this.search){
                     axios.get('/courseInfo/'+this.search).then(res=>{
