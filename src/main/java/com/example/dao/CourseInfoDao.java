@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface CourseInfoDao extends Mapper<CourseInfo> {
 
-    @Select("select * from course_info where name like concat('%',#{search},'%')")
+    @Select("select a.*, b.name teacherName from course_info a left join teacher_info b on a.teacherID=b.id where a.name like concat('%',#{search},'%')")
     List<CourseInfo> findSearch(String search);
+
+    @Select("select a.*, b.name teacherName from course_info a left join teacher_info b on a.teacherID=b.id")
+    List<CourseInfo> findAll();
 }

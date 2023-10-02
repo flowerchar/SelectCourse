@@ -65,19 +65,19 @@
                         <li>
                             <a href="#"><i class="fa fa-sitemap"></i> 信息管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse in">
-								<li>
+								<li v-if="user.level===1">
 									<a href="adminInfo.html"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i><span class="mini-sub-pro">管理员信息</span></a>
 								</li>
-								<li>
+								<li v-if="user.level===1">
 									<a href="teacherInfo.html"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i><span class="mini-sub-pro">教师信息</span></a>
 								</li>
-								<li>
+								<li v-if="user.level===1">
 									<a href="studentInfo.html"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i><span class="mini-sub-pro">学生信息</span></a>
 								</li>
-								<li>
+								<li v-if="user.level===1">
 									<a href="xueyuanInfo.html"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i><span class="mini-sub-pro">学院信息</span></a>
 								</li>
-								<li>
+								<li v-if="user.level===1">
 									<a href="zhuanyeInfo.html"><i class="fa fa-table sub-icon-mg" aria-hidden="true"></i><span class="mini-sub-pro">专业信息</span></a>
 								</li>
 								<li>
@@ -122,7 +122,7 @@
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <div class="nx-table-header">
-                                        <button class="btn btn-sm btn-primary" @click="add">新增</button>
+                                        <button class="btn btn-sm btn-primary" @click="add"  v-if="user.level===1">新增</button>
                                         <input type="text" placeholder="请输入搜索内容" v-model="search" @keyup.enter="loadTable(1)">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </div>
@@ -138,7 +138,7 @@
                                             <th>上课时间</th>
                                             <th>上课地点</th>
                                             <th>已选人数</th>
-                                            <th>操作</th>
+                                            <th v-if="user.level!==2">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody v-for="obj in tableData">
@@ -146,15 +146,16 @@
                                             <td>{{obj.name}}</td>
                                             <td>{{obj.description}}</td>
                                             <td>{{obj.credit}}</td>
-                                            <td>{{obj.teacherID}}</td>
+                                            <td>{{obj.teacherName}}</td>
                                             <td>{{obj.majorID}}</td>
                                             <td>{{obj.requiredNum}}</td>
                                             <td>{{obj.time}}</td>
                                             <td>{{obj.location}}</td>
                                             <td>{{obj.selectedNum}}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" @click="init(obj)">编辑</button>
-                                                <button class="btn btn-sm btn-danger" @click="del(obj.id)">删除</button>
+                                            <td v-if="user.level!==2">
+                                                <button class="btn btn-sm btn-primary" @click="init(obj)"  v-if="user.level===1">编辑</button>
+                                                <button class="btn btn-sm btn-danger" @click="del(obj.id)"  v-if="user.level===1">删除</button>
+                                                <button class="btn btn-sm btn-primary"   v-if="user.level===3">选课</button>
                                             </td>
                                         </tr>
                                         </tbody>

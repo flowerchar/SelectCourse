@@ -20,7 +20,7 @@ public class CourseInfoService {
     }
 
     public List<CourseInfo> findAll() {
-        return courseInfoDao.selectAll();
+        return courseInfoDao.findAll();
     }
 
     public void update(CourseInfo courseInfo) {

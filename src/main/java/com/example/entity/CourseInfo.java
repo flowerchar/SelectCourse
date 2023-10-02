@@ -42,4 +42,7 @@ public class CourseInfo {
 
     @Column(name = "teacherID")
     private Long teacherID;
+
+    @Transient
+    private String teacherName;
 }
