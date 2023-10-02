@@ -67,6 +67,11 @@ public class CourseInfoController {
             throw new CustomException("-1","认证时间过期");
         }
 
+        CourseSelectInfo info = courseSelectInfoService.find(courseInfo.getName(), courseInfo.getTeacherID(), user.getId());
+        if (ObjectUtil.isNotEmpty(info)){
+            throw new CustomException("-1","禁止重复选课！");
+        }
+
         CourseSelectInfo courseSelectInfo = new CourseSelectInfo();
         BeanUtils.copyProperties(courseInfo, courseSelectInfo);
         courseSelectInfo.setId(null);

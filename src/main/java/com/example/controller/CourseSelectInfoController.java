@@ -4,10 +4,9 @@ import com.example.common.Result;
 import com.example.entity.CourseSelectInfo;
 import com.example.service.CourseSelectInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -17,9 +16,24 @@ public class CourseSelectInfoController {
     @Autowired
     private CourseSelectInfoService courseSelectInfoService;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @GetMapping
     public Result findAll(){
-        List<CourseSelectInfo> list = courseSelectInfoService.findAll();
+        List<CourseSelectInfo> list = courseSelectInfoService.findAll(request);
         return Result.success(list);
+    }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Long id){
+        courseSelectInfoService.delete(id);
+        return Result.success();
+    }
+
+    @PutMapping
+    public Result update(@RequestBody CourseSelectInfo courseSelectInfo){
+        courseSelectInfoService.update(courseSelectInfo);
+        return Result.success();
     }
 }

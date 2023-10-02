@@ -49,5 +49,9 @@ public class CourseSelectInfo {
     @Transient
     private String teacherName;
 
+    @Transient
+    private String majorName;
 
+    @Transient
+    private String studentName;
 }

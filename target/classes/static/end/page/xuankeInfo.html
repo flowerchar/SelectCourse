@@ -139,6 +139,7 @@
                                             <th>上课地点</th>
                                             <th>选课学生</th>
                                             <th>课程状态</th>
+                                            <th v-if="user.level!==1">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody v-for="obj in tableData">
@@ -153,6 +154,10 @@
                                             <td>{{obj.location}}</td>
                                             <td>{{obj.studentName}}</td>
                                             <td>{{obj.status}}</td>
+                                            <td v-if="user.level!==1">
+                                                <button class="btn btn-sm btn-danger" v-if="user.level===3" @click="del(obj.id)" :disabled="obj.status==='已开课'">取消选课</button>
+                                                <button class="btn btn-sm btn-success" v-if="user.level===2" @click="begin(obj)" :disabled="obj.status==='已开课'">开课</button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -237,6 +242,27 @@
                     }
                 })
 
+            },
+            begin(obj){
+                obj.status="已开课"
+                axios.put("/courseSelectInfo", obj).then(res=>{
+                    if (res.data.code==='0'){
+                        msg("success","开课成功")
+                        //TODO this.loadTable()
+                    }else {
+                        msg("error", res.data.msg)
+                    }
+                })
+            },
+            del(id){
+                axios.delete("/courseSelectInfo/"+id).then(res=>{
+                    if (res.data.code==='0'){
+                        msg("success", "取消成功")
+                        this.loadTable()
+                    }else {
+                        msg("error", res.data.msg)
+                    }
+                })
             },
             logout() {
                 logout()
