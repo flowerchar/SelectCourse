@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.common.Result;
 import com.example.entity.CollegeInfo;
 import com.example.service.CollegeInfoService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,17 @@ public class CollegeInfoController {
     public Result find(@PathVariable String search){
         List<CollegeInfo> list = collegeInfoService.find(search);
         return Result.success(list);
+    }
+
+    @GetMapping("/page/{name}")
+    public Result findPage(Integer pageNum, Integer pageSize, @PathVariable String name){
+        PageInfo<CollegeInfo> info = collegeInfoService.findPageName(pageNum, pageSize, name);
+        return Result.success(info);
+    }
+
+    @GetMapping("/page")
+    public Result findPage(Integer pageNum, Integer pageSize){
+        PageInfo<CollegeInfo> info = collegeInfoService.findPage(pageNum, pageSize);
+        return Result.success(info);
     }
 }
