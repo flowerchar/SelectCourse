@@ -22,4 +22,7 @@ public interface TeacherInfoDao extends Mapper<TeacherInfo> {
 
     @Select("select * from teacher_info where name like concat('%',#{search},'%')")
     List<TeacherInfo> findByLikeName(String search);
+
+    @Select("select a.*, b.name collegeName from teacher_info a left join college_info b on a.collegeID=b.id")
+    List<TeacherInfo> findAll();
 }

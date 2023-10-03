@@ -48,7 +48,8 @@ public class TeacherInfoService {
     }
 
     public List<TeacherInfo> findAll() {
-        return teacherInfoDao.selectAll();
+        return teacherInfoDao.findAll();
+//        return teacherInfoDao.selectAll();
     }
 
     public void add(TeacherInfo teacherInfo) {
@@ -69,7 +70,7 @@ public class TeacherInfoService {
 
     public PageInfo<TeacherInfo> findPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<TeacherInfo> list = teacherInfoDao.selectAll();
+        List<TeacherInfo> list = teacherInfoDao.findAll();
         return PageInfo.of(list);
     }
 

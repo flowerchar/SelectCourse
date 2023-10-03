@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "teacher_info")
 @Data
@@ -16,6 +17,9 @@ public class TeacherInfo extends Account{
     @Column(name = "title")
     private String title;
 
-    @Column(name = "majorID")
-    private Long majorID;
+    @Column(name = "collegeID")
+    private Long collegeID;
+
+    @Transient
+    private String collegeName;
 }

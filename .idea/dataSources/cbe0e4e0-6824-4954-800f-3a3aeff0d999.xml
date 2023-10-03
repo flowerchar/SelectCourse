@@ -1381,8 +1381,8 @@ wiki|schema||wiki|localhost|grant option|G</Grants>
       <DefaultExpression>2</DefaultExpression>
       <Position>7</Position>
     </column>
-    <column id="365" parent="306" name="majorID">
-      <Comment>所属专业ID</Comment>
+    <column id="365" parent="306" name="collegeID">
+      <Comment>所属学院ID</Comment>
       <DataType>bigint|0s</DataType>
       <Position>8</Position>
     </column>
