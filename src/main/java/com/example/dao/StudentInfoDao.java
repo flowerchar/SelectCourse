@@ -18,4 +18,10 @@ public interface StudentInfoDao extends Mapper<StudentInfo> {
 
     @Select("select * from student_info where name=#{name}")
     StudentInfo findByName(String name);
+
+    @Select("select a.*, b.name collegeName from student_info a left join college_info b on a.collegeID=b.id where a.name like concat('%',#{name},'%')")
+    List<StudentInfo> findByNamePage(String name);
+
+    @Select("select a.*, b.name collegeName from student_info a left join college_info b on a.collegeID=b.id")
+    List<StudentInfo> findAll();
 }

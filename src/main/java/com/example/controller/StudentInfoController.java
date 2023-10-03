@@ -7,6 +7,7 @@ import com.example.entity.StudentInfo;
 import com.example.entity.TeacherInfo;
 import com.example.service.StudentInfoService;
 import com.example.service.TeacherInfoService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,17 @@ public class StudentInfoController {
     public Result delete(@PathVariable Long id){
         studentInfoService.deleteById(id);
         return Result.success();
+    }
+
+    @GetMapping("/page")
+    public Result findPage(Integer pageNum, Integer pageSize){
+        PageInfo<StudentInfo> info = studentInfoService.findPage(pageNum, pageSize);
+        return Result.success(info);
+    }
+
+    @GetMapping("/page/{name}")
+    public Result findPage(Integer pageNum, Integer pageSize, @PathVariable String name){
+        PageInfo<StudentInfo> info = studentInfoService.findPageName(pageNum, pageSize, name);
+        return Result.success(info);
     }
 }

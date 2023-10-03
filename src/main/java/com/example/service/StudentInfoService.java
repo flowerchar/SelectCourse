@@ -76,4 +76,16 @@ public class StudentInfoService {
     public void deleteById(Long id) {
         studentInfoDao.deleteByPrimaryKey(id);
     }
+
+    public PageInfo<StudentInfo> findPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<StudentInfo> infos = studentInfoDao.findAll();
+        return PageInfo.of(infos);
+    }
+
+    public PageInfo<StudentInfo> findPageName(Integer pageNum, Integer pageSize, String name) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<StudentInfo> infos = studentInfoDao.findByNamePage(name);
+        return PageInfo.of(infos);
+    }
 }
