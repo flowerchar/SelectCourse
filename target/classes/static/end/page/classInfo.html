@@ -160,6 +160,26 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item" v-bind:class="{disabled:preActive}">
+                                                <a class="page-link" href="javascript:void(0)"
+                                                   v-on:click="loadTable(pageInfo.hasPreviousPage?(pageInfo.pageNum-1):pageInfo.pageNum)">上一页</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="javascript:void(0)" v-if="pageInfo.pageNum>1" v-on:click="loadTable(pageInfo.pageNum-1)">{{pageInfo.pageNum-1}}</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" aria-disabled="true" href="javascript:void(0)">{{pageInfo.pageNum}}</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="javascript:void(0)" v-if="pageInfo.hasNextPage" v-on:click="loadTable(pageInfo.pageNum+1)">{{pageInfo.pageNum+1}}</a>
+                                            </li>
+                                            <li class="page-item" v-bind:class="{disabled:nextActive}">
+                                                <a class="page-link" href="javascript:void(0)"  v-on:click="loadTable(pageInfo.hasNextPage?(pageInfo.pageNum+1):pageInfo.pageNum)">下一页</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -271,8 +291,11 @@
             entity: {},
             user: {},
             majorObjs:[],
+            tableData: [],
             teacherObjs:[],
-            tableData:[],
+            pageInfo:{},
+            preActive:false,
+            nextActive:false,
             search:null
         },
         created: function () {
@@ -283,7 +306,7 @@
 
             this.loadMajors()
             this.loadTeachers()
-            this.loadTable()
+            this.loadTable(1)
         },
         methods: {
             select(obj){
@@ -296,21 +319,27 @@
                     }
                 })
             },
-            loadTable(){
+            loadTable(pageNum){
                 if (this.search){
-                    axios.get('/courseInfo/'+this.search).then(res=>{
+                    axios.get('/courseInfo/page/'+this.search+'?pageNum='+pageNum+'&pageSize=5').then(res=>{
                         if (res.data.code==='0'){
-                            this.tableData=res.data.data
+                            this.tableData = res.data.data.list
+                            this.pageInfo = res.data.data
+                            this.preActive = !(this.pageInfo.hasPreviousPage)
+                            this.nextActive = !(this.pageInfo.hasNextPage)
                         }else {
-                            msg("error",res.data.msg)
+                            msg("error", res.data.msg)
                         }
                     })
                 }else {
-                    axios.get('/courseInfo').then(res=>{
+                    axios.get('/courseInfo/page?pageNum='+pageNum+'&pageSize=5').then(res=>{
                         if (res.data.code==='0'){
-                            this.tableData=res.data.data
+                            this.tableData = res.data.data.list
+                            this.pageInfo = res.data.data
+                            this.preActive = !(this.pageInfo.hasPreviousPage)
+                            this.nextActive = !(this.pageInfo.hasNextPage)
                         }else {
-                            msg("error",res.data.msg)
+                            msg("error", res.data.msg)
                         }
                     })
                 }

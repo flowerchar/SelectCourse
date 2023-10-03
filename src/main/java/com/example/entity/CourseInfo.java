@@ -45,4 +45,7 @@ public class CourseInfo {
 
     @Transient
     private String teacherName;
+
+    @Transient
+    private String majorName;
 }

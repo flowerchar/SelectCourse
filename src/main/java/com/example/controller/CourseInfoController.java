@@ -9,6 +9,7 @@ import com.example.entity.CourseSelectInfo;
 import com.example.exception.CustomException;
 import com.example.service.CourseInfoService;
 import com.example.service.CourseSelectInfoService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -85,5 +86,17 @@ public class CourseInfoController {
         courseInfoService.update(courseInfo);
 
         return Result.success();
+    }
+
+    @GetMapping("/page")
+    public Result findPage(Integer pageNum, Integer pageSize){
+        PageInfo<CourseInfo> info = courseInfoService.findPage(pageNum, pageSize);
+        return Result.success(info);
+    }
+
+    @GetMapping("/page/{name}")
+    public Result findPage(Integer pageNum, Integer pageSize, @PathVariable String name){
+        PageInfo<CourseInfo> info = courseInfoService.findPageName(pageNum, pageSize, name);
+        return Result.success(info);
     }
 }
