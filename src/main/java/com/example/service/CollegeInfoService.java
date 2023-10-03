@@ -51,7 +51,7 @@ public class CollegeInfoService {
 
     public PageInfo<CollegeInfo> findPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<CollegeInfo> infos = collegeInfoDao.selectAll();
+        List<CollegeInfo> infos = collegeInfoDao.findAll();
         return PageInfo.of(infos);
     }
 }
