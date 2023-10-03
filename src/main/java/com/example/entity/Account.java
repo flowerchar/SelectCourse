@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +20,9 @@ public class Account {
 
     @Column(name = "password")
     private String password;
+
+    @Transient
+    private String newPassword;
 
     @Column(name = "sex")
     private String sex;

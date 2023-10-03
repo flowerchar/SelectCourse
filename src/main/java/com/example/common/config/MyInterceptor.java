@@ -1,5 +1,6 @@
 package com.example.common.config;
 
+import com.example.entity.Account;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,12 +16,12 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse
             response, Object handler) throws Exception {
-//        Account user = (Account) request.getSession().getAttribute("user");
-//        if (user == null) {
-//            // 重定向到登录页
-//            response.sendRedirect("/end/page/login.html");
-//            return false;
-//        }
+        Account user = (Account) request.getSession().getAttribute("user");
+        if (user == null) {
+            // 重定向到登录页
+            response.sendRedirect("/end/page/login.html");
+            return false;
+        }
         return true;
     }
     @Override

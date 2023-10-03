@@ -26,6 +26,8 @@ public class AccountController {
     private TeacherInfoService teacherInfoService;
     @Autowired
     private StudentInfoService studentInfoService;
+    @Autowired
+    private HttpServletRequest request;
 
     @PostMapping("/login")
     public Result login(@RequestBody Account user, HttpServletRequest request) {
@@ -94,6 +96,37 @@ public class AccountController {
     @GetMapping("/logout")
     public Result logout(HttpServletRequest request){
         request.getSession().setAttribute("user",null);
+        return Result.success();
+    }
+
+    @PutMapping("/updatePassword")
+    public Result updatePassword(@RequestBody Account account){
+        Account user = (Account) request.getSession().getAttribute("user");
+        String oldPassword = account.getPassword();
+        if (!user.getPassword().equals(oldPassword)){
+            return Result.error("-1", "原密码输入错误");
+        }
+        String newPassword = account.getNewPassword();
+        Integer level = user.getLevel();
+        if (1 == level) {
+            AdminInfo adminInfo = new AdminInfo();
+            BeanUtils.copyProperties(user, adminInfo);
+            adminInfo.setPassword(newPassword);
+            adminInfoService.update(adminInfo);
+        }
+        if (2 == level) {
+            TeacherInfo teacherInfo = new TeacherInfo();
+            BeanUtils.copyProperties(user, teacherInfo);
+            teacherInfo.setPassword(newPassword);
+            teacherInfoService.update(teacherInfo);
+        }
+        if (3 == level) {
+            StudentInfo studentInfo = new StudentInfo();
+            BeanUtils.copyProperties(user, studentInfo);
+            studentInfo.setPassword(newPassword);
+            studentInfoService.update(studentInfo);
+        }
+        request.getSession().setAttribute("user", null);
         return Result.success();
     }
 }
