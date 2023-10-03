@@ -15,4 +15,10 @@ public interface MajorInfoDao extends Mapper<MajorInfo> {
 
     @Select("select a.*, b.name as collegeName from major_info as a left join college_info b on a.collegeID = b.id where a.name like concat('%', #{search}, '%')")
     List<MajorInfo> findBySearch(String search);
+
+    @Select("select a.*, b.name collegeName from major_info a left join college_info b on a.collegeID = b.id where a.name like concat('%',#{name},'%')")
+    List<MajorInfo> findByNamePage(String name);
+
+    @Select("select a.*, b.name collegeName from major_info a left join college_info b on a.collegeID = b.id")
+    List<MajorInfo> findAll();
 }

@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.common.Result;
 import com.example.entity.MajorInfo;
 import com.example.service.MajorInfoService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,17 @@ public class MajorInfoController {
     public Result findSearch(@PathVariable String search){
         List<MajorInfo> list = majorInfoService.findSearch(search);
         return Result.success(list);
+    }
+
+    @GetMapping("/page")
+    public Result findPage(Integer pageNum, Integer pageSize){
+        PageInfo<MajorInfo> info = majorInfoService.findPage(pageNum, pageSize);
+        return Result.success(info);
+    }
+
+    @GetMapping("/page/{name}")
+    public Result findPage(Integer pageNum, Integer pageSize,@PathVariable String name){
+        PageInfo<MajorInfo> info=majorInfoService.findPageName(pageNum, pageSize, name);
+        return Result.success(info);
     }
 }

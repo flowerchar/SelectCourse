@@ -7,6 +7,8 @@ import com.example.dao.MajorInfoDao;
 import com.example.entity.CollegeInfo;
 import com.example.entity.MajorInfo;
 import com.example.exception.CustomException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +50,17 @@ public class MajorInfoService {
 
     public List<MajorInfo> findSearch(String search) {
         return majorInfoDao.findBySearch(search);
+    }
+
+    public PageInfo<MajorInfo> findPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<MajorInfo> infos = majorInfoDao.findAll();
+        return PageInfo.of(infos);
+    }
+
+    public PageInfo<MajorInfo> findPageName(Integer pageNum, Integer pageSize, String name) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<MajorInfo> infos = majorInfoDao.findByNamePage(name);
+        return PageInfo.of(infos);
     }
 }
