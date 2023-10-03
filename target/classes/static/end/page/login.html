@@ -53,6 +53,12 @@
                             </select>
                         </div>
 
+                        <div class="form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-check-square"></i></span>
+                            <input type="text" class="form-control" style="width: 150px;margin-right: 5px" v-model="user.verCode" placeholder="请输入验证码">
+                            <img :src="captchaUrl" @click="clickImg()" width="135px" height="33px">
+                        </div>
+
                         <div style="text-align: center" >
                             <a href="javascript:void(0)" class="btn btn-block btn-primary" @click="login">登录</a>
                         </div>
@@ -76,13 +82,18 @@
     new Vue({
         el: "#app",
         data: {
-            user: {}
+            user: {},
+            captchaUrl: '/captcha'
 
         },
         created: function () {
 
         },
         methods: {
+            clickImg(){
+                this.captchaUrl='/captcha?'+Math.random()
+                this.user.verCode = ""
+            },
             login(){
                 axios.post('/login', this.user).then(res=>{
                     if (res.data.code == '0'){
@@ -99,6 +110,7 @@
                         }
                     }else {
                         alert(res.data.msg)
+                        this.clickImg()
                     }
                 })
             }

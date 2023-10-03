@@ -10,11 +10,16 @@ import com.example.entity.TeacherInfo;
 import com.example.service.AdminInfoService;
 import com.example.service.StudentInfoService;
 import com.example.service.TeacherInfoService;
+import com.wf.captcha.ArithmeticCaptcha;
+import com.wf.captcha.SpecCaptcha;
+import com.wf.captcha.base.Captcha;
+import com.wf.captcha.utils.CaptchaUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping
@@ -28,9 +33,31 @@ public class AccountController {
     private StudentInfoService studentInfoService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private HttpServletResponse response;
+
+//    @RequestMapping("/captcha")
+    @GetMapping ("captcha")
+    public void captcha() throws Exception{
+//        四位数
+//        SpecCaptcha captcha = new SpecCaptcha(135,33,4);
+//        captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
+//        CaptchaUtil.out(captcha, request, response);
+
+        ArithmeticCaptcha captcha = new ArithmeticCaptcha(135, 33);
+        captcha.setLen(3);
+        captcha.getArithmeticString();
+        captcha.text();
+        CaptchaUtil.out(captcha, request, response);
+    }
 
     @PostMapping("/login")
-    public Result login(@RequestBody Account user, HttpServletRequest request) {
+    public Result login(@RequestBody Account user) {
+
+        if (!CaptchaUtil.ver(user.getVerCode(), request)){
+            CaptchaUtil.clear(request);
+            return Result.error("1001", "验证码不正确");
+        }
 
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getLevel())) {
             return Result.error("-1", "请完善输入信息");

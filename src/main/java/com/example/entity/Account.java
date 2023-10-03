@@ -24,6 +24,9 @@ public class Account {
     @Transient
     private String newPassword;
 
+    @Transient
+    private String verCode;
+
     @Column(name = "sex")
     private String sex;
 
