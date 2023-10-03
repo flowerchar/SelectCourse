@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.common.Result;
 import com.example.entity.CourseSelectInfo;
 import com.example.service.CourseSelectInfoService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class CourseSelectInfoController {
 
     @GetMapping
     public Result findAll(){
-        List<CourseSelectInfo> list = courseSelectInfoService.findAll(request);
+        List<CourseSelectInfo> list = courseSelectInfoService.findAll();
         return Result.success(list);
     }
 
@@ -35,5 +36,17 @@ public class CourseSelectInfoController {
     public Result update(@RequestBody CourseSelectInfo courseSelectInfo){
         courseSelectInfoService.update(courseSelectInfo);
         return Result.success();
+    }
+
+    @GetMapping("/page/{name}")
+    public Result findPageName(Integer pageNum, Integer pageSize,@PathVariable String name){
+        PageInfo<CourseSelectInfo> info = courseSelectInfoService.findPageName(pageNum, pageSize, name);
+        return Result.success(info);
+    }
+
+    @GetMapping("/page")
+    public Result findPage(Integer pageNum, Integer pageSize){
+        PageInfo<CourseSelectInfo> info = courseSelectInfoService.findPage(pageNum, pageSize);
+        return Result.success(info);
     }
 }

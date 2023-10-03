@@ -14,5 +14,11 @@ public interface CourseSelectInfoDao extends Mapper<CourseSelectInfo> {
     CourseSelectInfo find(String name, Long teacherID, Long studentID);
 
 
-    List<CourseSelectInfo> findByCondition(Long teacherID, Long studentID);
+    List<CourseSelectInfo> findByCondition(Long teacherID, Long studentID, String name);
+
+    @Select("select * from course_select_info where name like concat('%',#{name},'%')")
+    List<CourseSelectInfo> findByNamePage(String name);
+
+    @Select("select a.*, b.name teacherName from course_select_info a left join teacher_info b on a.teacherID=b.id ")
+    List<CourseSelectInfo> findAll();
 }

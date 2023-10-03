@@ -130,7 +130,7 @@
                                         <thead>
                                         <tr>
                                             <th>课程名称</th>
-                                            <th>课程介绍</th>
+<!--                                            <th>课程介绍</th>-->
                                             <th>课程学分</th>
                                             <th>授课教师</th>
                                             <th>所属专业</th>
@@ -144,7 +144,7 @@
                                         <tbody v-for="obj in tableData">
                                         <tr>
                                             <td>{{obj.name}}</td>
-                                            <td>{{obj.description}}</td>
+<!--                                            <td>{{obj.description}}</td>-->
                                             <td>{{obj.credit}}</td>
                                             <td>{{obj.teacherName}}</td>
                                             <td>{{obj.majorID}}</td>
@@ -313,7 +313,7 @@
                 axios.post("/courseInfo/select", obj).then(res=>{
                     if (res.data.code==='0'){
                         msg("success","选课成功")
-                        this.loadTable()
+                        this.loadTable(1)
                     }else {
                         msg("error",res.data.msg)
                     }
@@ -372,7 +372,7 @@
                         if (res.data.code==='0'){
                             msg("success","编辑成功")
                             $("#mod").modal('hide')
-                            this.loadTable()
+                            this.loadTable(1)
                         }else {
                             msg("error",res.data.msg)
                         }
@@ -382,7 +382,7 @@
                         if (res.data.code==='0'){
                             msg("success","新增成功")
                             $("#mod").modal('hide')
-                            this.loadTable()
+                            this.loadTable(1)
                         }else {
                             msg("error",res.data.msg)
                         }

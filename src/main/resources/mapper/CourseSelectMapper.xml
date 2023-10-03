@@ -11,6 +11,9 @@
             <if test="studentID != null">
                 and studentID=#{studentID}
             </if>
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
         </where>
     </select>
 </mapper>

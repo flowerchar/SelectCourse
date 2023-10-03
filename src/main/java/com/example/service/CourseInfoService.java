@@ -40,7 +40,7 @@ public class CourseInfoService {
 
     public PageInfo<CourseInfo> findPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<CourseInfo> infos = courseInfoDao.selectAll();
+        List<CourseInfo> infos = courseInfoDao.findAll();
         return PageInfo.of(infos);
     }
 
