@@ -4,17 +4,27 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.common.ResultCode;
 import com.example.dao.AdminInfoDao;
 import com.example.dao.CollegeInfoDao;
+import com.example.dao.CourseSelectInfoDao;
 import com.example.dao.StudentInfoDao;
-import com.example.entity.Account;
-import com.example.entity.AdminInfo;
-import com.example.entity.CollegeInfo;
-import com.example.entity.StudentInfo;
+import com.example.entity.*;
 import com.example.exception.CustomException;
+import com.example.util.DateTimeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -24,6 +34,12 @@ public class StudentInfoService {
     private StudentInfoDao studentInfoDao;
     @Autowired
     private CollegeInfoDao collegeInfoDao;
+    @Autowired
+    private CourseSelectInfoDao courseSelectInfoDao;
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private HttpServletResponse response;
 
     public Account login(String name, String password) {
 
@@ -87,5 +103,37 @@ public class StudentInfoService {
         PageHelper.startPage(pageNum,pageSize);
         List<StudentInfo> infos = studentInfoDao.findByNamePage(name);
         return PageInfo.of(infos);
+    }
+
+    public void exportCourseTable() {
+        Account user = (Account) request.getSession().getAttribute("user");
+        Long userId = user.getId();
+        List<CourseSelectInfo> courseSelectInfos = courseSelectInfoDao.findByStudentId(userId);
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("template/课程表模板.xlsx");
+
+        try {
+            assert in != null;
+            XSSFWorkbook excel = new XSSFWorkbook(in);
+            XSSFSheet sheet = excel.getSheet("Sheet1");
+            for (CourseSelectInfo c :
+                    courseSelectInfos) {
+                int dayOfWeek = DateTimeUtil.getDayOfWeek(c.getTime());
+                int timeSlot = DateTimeUtil.getTimeSlot(c.getTime());
+                Row row = sheet.getRow(timeSlot);
+                Cell cell = row.getCell(dayOfWeek + 2); // +2 because weekdays start from column 3
+
+                cell.setCellValue(c.getName() + "\n" + c.getTeacherName() + "\n" + c.getLocation());
+
+                // Merge two cells vertically
+                sheet.addMergedRegion(new CellRangeAddress(timeSlot, timeSlot + 1, dayOfWeek + 2, dayOfWeek + 2));
+            }
+
+            ServletOutputStream out = response.getOutputStream();
+            excel.write(out);
+            out.close();
+            excel.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

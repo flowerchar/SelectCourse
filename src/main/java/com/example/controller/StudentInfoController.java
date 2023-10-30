@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,9 @@ public class StudentInfoController {
 
     @Autowired
     private StudentInfoService studentInfoService;
+
+//    @Autowired
+//    private HttpServletRequest request;
 
     @PutMapping
     public Result update(@RequestBody StudentInfo studentInfo){
@@ -54,5 +58,11 @@ public class StudentInfoController {
     public Result findPage(Integer pageNum, Integer pageSize, @PathVariable String name){
         PageInfo<StudentInfo> info = studentInfoService.findPageName(pageNum, pageSize, name);
         return Result.success(info);
+    }
+
+    @GetMapping("/export")
+    public Result export(){
+        studentInfoService.exportCourseTable();
+        return Result.success();
     }
 }

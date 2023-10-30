@@ -120,7 +120,8 @@ public class CourseSelectInfoService {
         if (1==user.getLevel()){
             list = courseSelectInfoDao.findAll();
         }else if(2==user.getLevel()){
-            list =  courseSelectInfoDao.findByCondition(user.getId(), null, null);
+            list = courseSelectInfoDao.findByTeacherIDDistinct(user.getId());
+//            list =  courseSelectInfoDao.findByCondition(user.getId(), null, null);
         }else{
             list =  courseSelectInfoDao.findByCondition(null,user.getId(), null);
         }
@@ -133,7 +134,9 @@ public class CourseSelectInfoService {
             StudentInfo studentInfo = studentInfoDao.selectByPrimaryKey(c.getStudentID());
             c.setMajorName(majorInfo.getName());
             c.setTeacherName(teacherInfo.getName());
-            c.setStudentName(studentInfo.getName());
+            if (c.getStudentID()!=null){
+                c.setStudentName(studentInfo.getName());
+            }
         }
         return PageInfo.of(list);
     }

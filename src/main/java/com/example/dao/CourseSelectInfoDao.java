@@ -21,4 +21,10 @@ public interface CourseSelectInfoDao extends Mapper<CourseSelectInfo> {
 
     @Select("select a.*, b.name teacherName from course_select_info a left join teacher_info b on a.teacherID=b.id ")
     List<CourseSelectInfo> findAll();
+
+    @Select("select * from course_select_info where studentID=#{userId}")
+    List<CourseSelectInfo> findByStudentId(Long userId);
+
+    @Select("SELECT DISTINCT name, description, majorID, credit, teacherID, required_num, time, location FROM `course_select_info` WHERE teacherID=#{id}")
+    List<CourseSelectInfo> findByTeacherIDDistinct(Long id);
 }
