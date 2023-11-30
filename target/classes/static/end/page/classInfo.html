@@ -133,11 +133,11 @@
 <!--                                            <th>课程介绍</th>-->
                                             <th>课程学分</th>
                                             <th>授课教师</th>
-<!--                                            <th>所属专业</th>-->
-<!--                                            <th>开班人数</th>-->
-<!--                                            <th>上课时间</th>-->
-<!--                                            <th>上课地点</th>-->
-<!--                                            <th>已选人数</th>-->
+                                            <th>所属专业</th>
+                                            <th>开班人数</th>
+                                            <th>上课时间</th>
+                                            <th>上课地点</th>
+                                            <th>已选人数</th>
                                             <th v-if="user.level!==2">操作</th>
                                         </tr>
                                         </thead>
@@ -147,11 +147,11 @@
 <!--                                            <td>{{obj.description}}</td>-->
                                             <td>{{obj.credit}}</td>
                                             <td>{{obj.teacherName}}</td>
-<!--                                            <td>{{obj.majorID}}</td>-->
-<!--                                            <td>{{obj.requiredNum}}</td>-->
-<!--                                            <td>{{obj.time}}</td>-->
-<!--                                            <td>{{obj.location}}</td>-->
-<!--                                            <td>{{obj.selectedNum}}</td>-->
+                                            <td>{{obj.majorID}}</td>
+                                            <td>{{obj.requiredNum}}</td>
+                                            <td>{{obj.time}}</td>
+                                            <td>{{obj.location}}</td>
+                                            <td>{{obj.selectedNum}}</td>
                                             <td v-if="user.level!==2">
                                                 <button class="btn btn-sm btn-primary" @click="init(obj)"  v-if="user.level===1">编辑</button>
                                                 <button class="btn btn-sm btn-danger" @click="del(obj.id)"  v-if="user.level===1">删除</button>
