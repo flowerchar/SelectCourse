@@ -22,11 +22,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping
+//@RequestMapping
 public class AccountController {
 
     @Autowired
-    private AdminInfoService adminInfoService;
+    private AdminInfoService adminInfoService; // AdminInfoService adminInfoService = new AdminInfoService();
     @Autowired
     private TeacherInfoService teacherInfoService;
     @Autowired
@@ -62,7 +62,7 @@ public class AccountController {
         if (ObjectUtil.isEmpty(user.getName()) || ObjectUtil.isEmpty(user.getPassword()) || ObjectUtil.isEmpty(user.getLevel())) {
             return Result.error("-1", "请完善输入信息");
         }
-        Integer level = user.getLevel();
+        Integer level = user.getLevel();  // Animal a = new Cat();
         Account loginUser = new Account();
         if (1 == level) {
             loginUser = adminInfoService.login(user.getName(), user.getPassword());
@@ -73,13 +73,15 @@ public class AccountController {
         if (3 == level) {
             loginUser = studentInfoService.login(user.getName(), user.getPassword());
         }
-        request.getSession().setAttribute("user", loginUser);
+        request.getSession().setAttribute("user", loginUser);  //cookies session
+        System.out.println(loginUser.getId());
         return Result.success(loginUser);
     }
 
     @GetMapping("/getUser")
     public Result getUser(HttpServletRequest request) {
         Account user = (Account) request.getSession().getAttribute("user");
+        System.out.println(user.getId());
         Integer level = user.getLevel();
         Account loginUser = new Account();
         if (1 == level) {

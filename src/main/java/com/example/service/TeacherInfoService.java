@@ -60,7 +60,7 @@ public class TeacherInfoService {
         if (ObjectUtil.isEmpty(teacherInfo.getPassword())){
             teacherInfo.setPassword("123456");
         }
-        teacherInfo.setLevel(2);
+//        teacherInfo.setLevel(2);
         teacherInfoDao.insertSelective(teacherInfo);
     }
 

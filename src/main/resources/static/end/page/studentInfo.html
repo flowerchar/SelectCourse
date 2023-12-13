@@ -123,6 +123,7 @@
                                 <div class="table-responsive">
                                     <div class="nx-table-header">
                                         <button class="btn btn-sm btn-primary" @click="add">新增</button>
+                                        <button class="btn btn-sm btn-success" @click="importStu" v-if="user.level===1">导入信息</button>
                                         <input type="text" placeholder="请输入搜索内容" v-model="search" @keyup.enter="loadTable(1)">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </div>
@@ -295,6 +296,15 @@
                 axios.get("/collegeInfo").then(res=>{
                     if (res.data.code==='0'){
                         this.collegeObjs = res.data.data
+                    }else {
+                        msg("error",res.data.msg)
+                    }
+                })
+            },
+            importStu(){
+                axios.get("/adminInfo/importStu").then(res=>{
+                    if (res.data.code==='0'){
+                        msg("success","导入成功")
                     }else {
                         msg("error",res.data.msg)
                     }

@@ -12,7 +12,5 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-//    Download
-//    License ID:
-//    TVWU5182QN
+
 }

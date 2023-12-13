@@ -35,4 +35,12 @@ public class Account {
 
     @Column(name = "level")
     private Integer level;
+
+//    public String getName() {
+//        return name;
+//    }
+
+//    public Account(){
+//
+//    }
 }
