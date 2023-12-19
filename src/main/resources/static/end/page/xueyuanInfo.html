@@ -266,7 +266,7 @@
             },
             init(obj){
                 this.entity = obj
-                $("#mod").modal("show")
+                $("#mod").modal("show") //jquery
             },
             logout() {
                 logout()
@@ -282,7 +282,7 @@
                     axios.delete('/collegeInfo/'+id).then(res=>{
                         if (res.data.code==='0'){
                             msg("success","删除成功")
-                            _this.loadTable()
+                            _this.loadTable(1)
                         }else {
                             msg("error",res.data.msg)
                         }
@@ -322,7 +322,7 @@
                         if (res.data.code==='0'){
                             msg("success", "编辑成功")
                             $("#mod").modal("hide")
-                            this.loadTable()
+                            this.loadTable(1)
                         }else {
                             msg("error", res.data.msg)
                         }
@@ -332,7 +332,7 @@
                         if (res.data.code==='0'){
                             msg("success", "新增成功")
                             $("#mod").modal("hide")
-                            this.loadTable()
+                            this.loadTable(1)
                         }else {
                             msg("error", res.data.msg)
                         }

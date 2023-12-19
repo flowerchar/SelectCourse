@@ -16,7 +16,7 @@ public interface CollegeInfoDao extends Mapper<CollegeInfo> {
     @Select("select * from college_info where name like concat('%',#{search},'%')")
     List<CollegeInfo> find(String search);
 
-    @Select("select * from college_info where name like concat('%', #{name}, '%')")
+    @Select("select * from college_info where name like concat('%', #{name}, '%')")  //    %会计%
     List<CollegeInfo> findByNamePage(String name);
 
 //    @Select("select a.*, b.status status from course_info a left join course_select_info b on a.name=b.name and a.teacherID=b.teacherID")

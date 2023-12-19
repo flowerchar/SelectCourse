@@ -24,4 +24,5 @@ public interface StudentInfoDao extends Mapper<StudentInfo> {
 
     @Select("select a.*, b.name collegeName from student_info a left join college_info b on a.collegeID=b.id")
     List<StudentInfo> findAll();
+
 }

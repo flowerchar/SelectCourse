@@ -19,7 +19,7 @@ import java.util.List;
 public class StudentInfoController {
 
     @Autowired
-    private StudentInfoService studentInfoService;
+    private StudentInfoService studentInfoService;  //StudentInfoService studentInfoService = new StudentInfoService();
 
 //    @Autowired
 //    private HttpServletRequest request;
@@ -27,6 +27,7 @@ public class StudentInfoController {
     @PutMapping
     public Result update(@RequestBody StudentInfo studentInfo){
         studentInfoService.update(studentInfo);
+        // return new Result("0", "成功")
         return Result.success();
     }
 

@@ -1,210 +1,127 @@
-## 系统功能描述
-### 功能模块 
+## 一、Java框架
 
-1. 管理员信息：用户名、密码、性别、年龄、手机号
-2. 教师信息：用户名、密码、性别、年龄、职称、所属专业
-3. 学生信息：用户名、密码、性别、年龄、学号、总学分、所属学院
-4. 学院信息：学院名称、学院介绍、学院学分限制
-5. 专业信息：专业名称、系名、所属学院
-6. 课程信息：课程名称、介绍、学分、所属专业、上课教师、开班人数、上课时段、上课地点、已选人数
-7. 选课信息：课程名称、介绍、学分、所属专业、上课教师、开班人数、上课时段、上课地点、学生姓名、课程状态
-8. 登录注册、修改密码、个人信息管理、退出登录
-### 系统角色
+国内最流行的后端技术栈是java的ssm(Spring, SpringMVC, Mybatis)。最新的是Springboot以及SpringCloud
 
-1. 管理员：管理员可以看到以上所有模块，管理所有模块信息。
-2. 教师：教师可以看到学院信息、专业信息，但只能查看；可以查看自己的课程信息；可以查看自己课程的选课信息
-3. 学生：学生可以查看学院、专业信息；可以对已有的课程进行选课，可以再选课信息模块对已选的课程进行取消。如果某个课程被删除，那么已选该课程的选课信息状态变成已取消。
-## 系统技术栈
+1. Spring是Spring系列的基石，主要有两个理念：**IOC和AOP**，IOC是控制反转的意思，代表着把对象创建的权利从程序员转移到框架上去，在Java里面传统思想是程序员自己手动new一个对象出来。这里列举两个需要用到IOC的场景：
 
-1. 后端：Springboot、MyBatis、SpringMVC
-2. 前端：html、css、JavaScript、bootstrap、Vue.js
-3. 数据库：MySQL 5.7 或者 MySQL 8
-4. 前后端：不分离
-5. 编辑器：IDEA2021
-## 系统实现
-### 项目脚手架的准备
+   - IOC通过DI(依赖注入)的方式保证了每个类都是单例，那么在需要使用到这个类的某些能力的时候，只需要调用这个类的唯一单例就行。如果交给程序员来new不能保证只有一个单例，并且如何把这个对象共享到其他类也是一个难题。全局保证**一个类只有一个实例对象**就能极大节约资源，提高速度
+   - 有些时候程序在运行时才会知道要实例哪些对象，而并不是在编译前就提前知道的。比如有一个接口Animal，三个实现类Cat, Dog, Bird。在程序运行之前，并不知道用户会使用哪一个实现类，那么就不能在程序里写死new，可以在外部资源文件(比如properties)指定需要加载哪个类，程序在**运行的时候就可以通过指定外部资源来创建所需的对象**(基于反射)
 
-### 管理员信息模块开发
-#### 数据库设计
+   AOP是一种**无侵入**的思想，比如现在有一个电商系统，用户下单的时候需要将商品的各种信息保存到数据库。但是现在有一个需求，在下单的同时需要将下单的创建时间和创建人也一并保存到数据库，推广一下，不只是下单，包括用户创建地址的时候也需要将创建时间以及创建人保存到数据库。对于这一类非核心的但是需要的公共字段就可以用AOP来处理，我们只需要抽离公共字段(创建人，创建时间，修改人，修改时间)通过AOP就能实现**无需改动原核心代码**就能实现以上需求
 
-```mysql
-CREATE TABLE `admin_info` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户名',
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '密码',
-  `sex` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '性别',
-  `age` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '年龄',
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机号码',
-  `level` int DEFAULT '1' COMMENT '权限等级',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+2. SpringMVC是基于Spring两大理念上做的一个web框架，六七年前用的很多，现在由于Springboot已经用的很少了
+
+3. Springboot是因为Spring跟SpringMVC配置特别麻烦而提出来的一个轻量级框架。在Springboot讲究**约定大于配置**，通过“约定”就能避免配置大量繁琐的文件，除非真的要做特别定制需求才会去配置，这种开箱即用的特性简化了开发流程
+
+4. SpringCloud是基于Springboot的，因为Springboot是单体项目，所有功能聚合在一起。在用户流量特别大的时候，其实需要将各个模块拆分到不同服务器上**分散压力**，就算宕机也能对外提供服务。比如SpringCloud就会将电商系统的订单模块，购物车模块，商品模块拆分到不同服务器上面
+
+5. Mybatis是一个**数据库对象映射**框架，Mybatis将数据库里面的一张表映射成了Java里面一个对象，表里面的字段就是对象里面的字段，比如有一张user表(两字段user_id, user_name)，那么对应User类(两字段userId, userName)。Mybatis就相当于Java代码跟数据库的缓冲区
+
+## 二、后端思想
+
+后端开发思想是MVC，这种思想存在于各种后端语言中。M代表数据，V代表视图，C代表控制器。当用户在前端地址栏请求一个url资源，那么首先会访问到控制器，控制器会对这次请求进行分析，比如是什么类型的请求GET?POST?，有没有带路径参数等等。处理好之后会交给M修改数据，最后通过V返回前端。比如一个请求是：POST /goods/update/?id=12，其中的Body参数为{price:999, inventory:20}，商家在管理端希望将编号为12的商品修改价格为999，库存为20件。控制器接收到该路径后交给mapper(java中调用mybatis)修改好数据，再通过V将更新后的数据返回给前端，让用户看到最新的状态
+
+
+
+## 三、前端
+
+前端是MVVM思想：
+
+- Model：数据模型，存放用于展示的数据，有的数据是写死的，大多数是从后端返回的数据
+- View：视图，用于界面，在前端我们可以理解为Dom操作
+- ViewModel：视图模型，可实现数据的双向绑定，连接View和Model的桥梁，当数据变化时，ViewModel够监听到数据的变化（通过Data Bindings），自动更新视图，而当用户操作视图，ViewModel也能监听到视图的变化（通过DOM Listeners），然后通知数据做改动，这就实现了数据的双向绑定
+
+在国内最流行的典型前端框架就是Vue，并衍生出Uniapp(一套代码多端编译)，Vue-Router(路由)，Pinia(状态管理)，UseVue等等产品。Vue的核心理念就是**响应式数据**(承担了ViewModel的职责)，这意味着数据会自动响应变化而无需程序员手动修改。比如：
+
+1. 在购物车里用户修改了单品数量，购物车计算总价会自动响应变化，实时显示出总价，这一点就不需要程序员编写函数监听数据再去修改数据了，因为Vue里面提供的就是**数据绑定**
+2. 在很多系统里面都有推荐系统，类似于猜你喜欢，这种需求往往是先给出一定的数据(比如10个)，当用户往下滑动到底部的时候再发起请求，此时页面下方会**自动刷新出一些数据**。实现原理是用一个响应式变量DataList接收返回的数据，当发生触底事件时再发起请求，并把新的数据追加到DataList后面，框架会监听到DataList发生改变了，那么会通过列表渲染在前端界面自动加载新的数据
+
+
+
+vue react angluar
+
+ajax
+
+REST
+
+- get  select
+- post  insert
+- put  update
+- delete delete
+
+maven
+
+requiresment.txt
+
+JavaBean
+
+- getter
+- setter
+- 构造器
+- Data toString
+
+
+
+vue bootstrap axois
+
+
+
+orm 
+
+
+
+```java
+//java中使用一个user.name
+class User{
+    private String name;
+    //getter setter 构造器
+}
+User user = new User("admin")
 ```
 
-
-
-#### 用户实体类的设计
-
-#### 登录功能的实现（前端）
-```html
-<form role="form">
-  <hr/>
-  <br/>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-    <input type="text" class="form-control" placeholder="用户名"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-    <input type="password" class="form-control" placeholder=" 密码"/>
-  </div>
-  <h5 style="color: white">请选择角色</h5>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-    <select class="form-control">
-      <option value="" selected="">请选择</option>
-      <option value="1">管理员</option>
-      <option value="2">教师</option>
-      <option value="3">学生</option>
-    </select>
-  </div>
-
-  <div style="text-align: center">
-    <a href="javascript:void(0)" class="btn btn-primary">登录</a>
-  </div>
-  <hr/>
-  <div style="text-align: center">
-    <span style="color: white">未注册 ?</span> <a href="register.html" style="color: yellow">点击这里 </a>
-  </div>
-
-</form>
+```javascript
+//js中使用user.name
+user = {}
+user.name = "admin"
 ```
-#### 登录功能的实现（后端）
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.dao.AdminInfoDao">
 
-    
-</mapper>
-```
-#### 个人主页的实现
+> 软编码：比如开发一个贪吃蛇游戏，定义屏幕的宽度和高度
+>
+> int WIDTH,HEIGHT = 800 800      *
+>
+> 那么在之后需要用到边界的时候，只需要引用变量就可以了，比如
+>
+> if (snake.x>=WIDTH) { return -1;}
+>
+> else { return 0}
+>
+> 如果需要更改游戏界面大小，只需要在最开始的*地方修改一处就行了
 
-#### 退出登录的实现
+- 学院->部门->专业
 
-### 教师信息模块开发
-#### 数据库设计
-#### 实体类的设计
-#### 教师注册功能的实现（前端）
-```html
-<form role="form">
-  <hr/>
-  <br/>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-    <input type="text" class="form-control" placeholder="用户名"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-    <input type="password" class="form-control" placeholder=" 密码"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-    <input type="password" class="form-control" placeholder=" 确认密码"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-male"></i></span>
-    <div style="margin-left: 20px">
-      <input type="radio" name="sex" value="男" title="男" checked>
-      <span style="margin: 0 20px 0 5px">男</span>
-      <input type="radio" name="sex" value="女" title="女">
-      <span style="margin: 0 20px 0 5px">女</span>
-    </div>
-  </div>
-  <h5>请选择角色</h5>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-    <select class="form-control">
-      <option value="" selected="">请选择</option>
-      <option value="2">教师</option>
-      <option value="3">学生</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label class="checkbox-inline">
-    </label>
-    <span class="pull-right">
-    </span>
-  </div>
+- 管理员编辑课程，学生选课，教师通过
+- 只有登录页需要校验身份，用不着每一次请求后端服务之前都去数据库鉴别一次身份是否正确(无意义且浪费资源)。因此在登录鉴别成功之后，把相关信息保存到本次会话。同理前端把校验正确的信息存放到localStorage，避免不必要开销
+- 在类上打@RestController @Service @Mapper，就意味着把这些类实例化一个唯一的对象，并且加入到spring容器里（把汤圆下锅）
+- 在需要使用的地方加入@Autowired，就代表从容器里取出该类型的对象使用（把汤圆装进碗里）
+- 生命周期函数（也叫作钩子函数），这是在某个特定周期会触发的函数，有点类似于Python类里面的\_\_init\_\_   \_\_del\_\_  。在浏览器页面就有加载时，销毁时等等时机
+- 以json传送的数据要加@Requestbody
+- 通过v-if结合level控制权限
+- 所有标签里面的class属性都只是控制样式，不涉及代码逻辑
+- SELECT * FROM student_info limit 4,3 是从第四行开始(包括这一行)，返回三行数据。mysql索引从零开始。使用PageHelper有两个好处：
+  - 不用自己写sql语句的limit
+  - 额外返回上下页信息
+- 回显
 
-  <div style="text-align: center">
-    <a href="javascript:void(0)" @click="register" class="btn btn-primary">注册</a>
-  </div>
-  <hr/>
+> {
+>
+> ​	"pageNum":1,
+>
+> ​	"pageSize":5
+>
+> }模糊查询
+>
+> http://localhost:8888/collegeInfo/page/search?pageNum=1&pageSize=5
 
-</form>
-```
-#### 教师注册功能的实现（后端）
+- 在很多场景下，新增跟编辑是复用一个组件（因为数据基本一样），那么怎么区分是新增还是编辑？通过id。因为新增还没有把数据插入到数据库里面，那么就不存在id。但是对于编辑，数据是已经从数据库里面返回的，那么一定存在id
+- 软编码概念很广泛，包括数据库里面一张表存放另一张表的主键id来实现两张表关联
 
-#### 个人主页的实现
-```html
-<form role="form" style="width: 300px">
-  <input type="hidden" id="id" name="id" v-model="entity.id">
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-    <input type="password" class="form-control" v-model="entity.password" placeholder="原密码"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-    <input type="password" class="form-control" v-model="entity.newPassword" placeholder="新密码"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-    <input type="password" class="form-control" v-model="entity.new2Password" placeholder="确认密码"/>
-  </div>
-  <div style="text-align: center">
-    <a href="javascript:void(0)" @click="updatePassword()" class="btn btn-primary">提交</a>
-  </div>
-</form>
-```
-#### 教师信息管理的实现（前端）
-
-#### 教师信息管理的实现（后端）
-
-
-### 学生信息模块开发
-#### 数据库设计
-
-#### 实体类的设计
-
-#### 学生注册功能的实现（前端）
-
-#### 教师注册功能的实现（后端）
-
-#### 个人主页的实现
-
-#### 教师信息管理的实现（前端）
-
-#### 教师信息管理的实现（后端）
-### 学院信息模块开发
-
-### 专业信息模块开发
-
-### 课程信息模块开发
-
-### 选课信息模块开发
-
-### 课表信息模块开发
-
-## sql脚本
-
-## TODO
-
-1. 对于相同课程、相同时段、相同地点以及相同老师，只需要点击一次开课就能批量开课，而不是每一个选课信息都需要点击开课
-2. 在新增课程的时候，不能在同时段同教室出现多个课程
-3. 对于学生，可以将所选的课导出excel表格
-
-## 优化重构
-
-1. JWT取代Session+Cookies
-2. 使用常量类
-3. 对于数据库中每张表，应该都有create_time, update_time, update_user字段。前端分页支持按照日期模糊查询

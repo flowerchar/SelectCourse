@@ -30,6 +30,7 @@ public class AdminInfoService {
     }
 
     public AdminInfo findById(Long id) {
+        // select * from admin_info where id = ?
         return adminInfoDao.selectByPrimaryKey(id);
     }
 
