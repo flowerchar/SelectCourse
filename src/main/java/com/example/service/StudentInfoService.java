@@ -11,6 +11,7 @@ import com.example.exception.CustomException;
 import com.example.util.DateTimeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.opencsv.CSVWriter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -105,33 +107,30 @@ public class StudentInfoService {
         return PageInfo.of(infos);
     }
 
-    public void exportCourseTable() {
+    public void exportCourseTable(HttpServletResponse response) {
         Account user = (Account) request.getSession().getAttribute("user");
         Long userId = user.getId();
+        String name = courseSelectInfoDao.findNameByID(userId);
+        String csvName = "D:\\githubRep\\SelectCourse\\src\\main\\resources\\template\\"+ name + ".csv";
         List<CourseSelectInfo> courseSelectInfos = courseSelectInfoDao.findByStudentId(userId);
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("template/课程表模板.xlsx");
+        System.out.println(courseSelectInfos);
+        writeDataToCSV(csvName, courseSelectInfos);
+    }
 
-        try {
-            assert in != null;
-            XSSFWorkbook excel = new XSSFWorkbook(in);
-            XSSFSheet sheet = excel.getSheet("Sheet1");
-            for (CourseSelectInfo c :
-                    courseSelectInfos) {
-                int dayOfWeek = DateTimeUtil.getDayOfWeek(c.getTime());
-                int timeSlot = DateTimeUtil.getTimeSlot(c.getTime());
-                Row row = sheet.getRow(timeSlot);
-                Cell cell = row.getCell(dayOfWeek + 2); // +2 because weekdays start from column 3
+    public static void writeDataToCSV(String filePath, List<CourseSelectInfo> courseSelectInfoList) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
+            // 写入CSV文件的头部
+            writer.writeNext(new String[]{"Time", "Course Name", "Location"});
 
-                cell.setCellValue(c.getName() + "\n" + c.getTeacherName() + "\n" + c.getLocation());
-
-                // Merge two cells vertically
-                sheet.addMergedRegion(new CellRangeAddress(timeSlot, timeSlot + 1, dayOfWeek + 2, dayOfWeek + 2));
+            // 写入数据
+            for (CourseSelectInfo courseSelectInfo : courseSelectInfoList) {
+                String[] data = {
+                        courseSelectInfo.getTime(),
+                        courseSelectInfo.getCourseName(),
+                        courseSelectInfo.getLocation()
+                };
+                writer.writeNext(data);
             }
-
-            ServletOutputStream out = response.getOutputStream();
-            excel.write(out);
-            out.close();
-            excel.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
