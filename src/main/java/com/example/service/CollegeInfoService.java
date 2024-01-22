@@ -34,9 +34,13 @@ public class CollegeInfoService {
         collegeInfoDao.updateByPrimaryKeySelective(collegeInfo);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Long id){
         collegeInfoDao.deleteByPrimaryKey(id);
     }
+
+//    public void deleteById(Long id) {
+//        collegeInfoDao.deleteByPrimaryKey(id);
+//    }
 
     public List<CollegeInfo> find(String search) {
 
