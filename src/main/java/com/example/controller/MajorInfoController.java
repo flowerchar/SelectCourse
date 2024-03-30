@@ -41,7 +41,7 @@ public class MajorInfoController {
     }
 
     @GetMapping("/{search}")
-    public Result findSearch(@PathVariable String search){
+    public Result findSearch(@PathVariable String search) {
         List<MajorInfo> list = majorInfoService.findSearch(search);
         return Result.success(list);
     }

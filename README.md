@@ -180,3 +180,80 @@ user.name = "admin"
 解释型
 
 selenium
+
+
+
+1. 左连接（LEFT JOIN）：返回左表中的所有行，以及右表中满足连接条件的行。如果右表中没有匹配的行，则结果集中将包含 NULL 值。
+
+```mysql
+sqlCopy codeSELECT * 
+FROM table1
+LEFT JOIN table2 ON table1.column = table2.column;
+```
+
+2. 右连接（RIGHT JOIN）：与左连接类似，但返回右表中的所有行，以及左表中满足连接条件的行。如果左表中没有匹配的行，则结果集中将包含 NULL 值。
+
+```mysql
+sqlCopy codeSELECT * 
+FROM table1
+RIGHT JOIN table2 ON table1.column = table2.column;
+```
+
+3. 全连接（FULL OUTER JOIN）：返回两个表中的所有行，无论是否满足连接条件。如果某一行在其中一个表中没有匹配行，则另一个表中对应位置的列将包含 NULL 值。
+
+```mysql
+sqlCopy codeSELECT * 
+FROM table1
+FULL OUTER JOIN table2 ON table1.column = table2.column;
+```
+
+假设我们有两个表格：一个存储有关用户的信息（users），另一个存储有关用户订单的信息（orders）。我们想要获取每个用户以及他们的订单信息。如果某个用户没有订单，我们也想要包括该用户在结果中，并且在订单信息中显示 NULL。
+
+下面是这两个表的简化示例：
+
+**users** 表：
+
+```mysql
+| user_id | username |
+|---------|----------|
+| 1       | Alice    |
+| 2       | Bob      |
+| 3       | Charlie  |
+```
+
+**orders** 表：
+
+```mysql
+| order_id | user_id | product  |
+|----------|---------|----------|
+| 101      | 1       | Product1 |
+| 102      | 1       | Product2 |
+| 103      | 3       | Product3 |
+```
+
+现在，我们可以使用左连接来获取每个用户及其订单信息。左连接将返回左表（users）中的所有行，并与右表（orders）中匹配的行相结合。如果某个用户没有订单，那么订单信息列将显示为 NULL。
+
+```mysql
+sqlCopy codeSELECT u.username, o.order_id, o.product
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id;
+```
+
+执行以上查询后，我们将获得如下结果：
+
+```mysql
+| username | order_id | product  |
+|----------|----------|----------|
+| Alice    | 101      | Product1 |
+| Alice    | 102      | Product2 |
+| Bob      | NULL     | NULL     |
+| Charlie  | 103      | Product3 |
+```
+
+可以看到，结果包含了所有用户，即使其中一些用户（如 Bob）没有订单，其订单信息列显示为 NULL。这就是左连接的作用：它返回左表中的所有行，以及与右表中匹配的行，如果没有匹配的行则显示为 NULL。
+
+什么连接就优先考虑什么，“什么一定要列完”
+
+
+
+为什么要用PageHelper这类第三方库？因为原生的Limit语句很不好用   a,b。从第a(从第0行开始包括第a行)行开始返回b条数据

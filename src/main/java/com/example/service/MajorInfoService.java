@@ -37,6 +37,9 @@ public class MajorInfoService {
             CollegeInfo info = collegeInfoDao.selectByPrimaryKey(majorInfo.getCollegeID());
             majorInfo.setCollegeName(info.getName());
         }
+//        for (int  i;i<12;i++){
+//            arr[i]
+//        }
         return list;
     }
 

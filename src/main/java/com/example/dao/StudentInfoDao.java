@@ -10,7 +10,7 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 @Repository
-//@org.apache.ibatis.annotations.Mapper
+//@org.apache.ibatis.annotations.Mapper f-
 public interface StudentInfoDao extends Mapper<StudentInfo> {
 
     @Select("select * from student_info where name=#{name} and password=#{password}")
