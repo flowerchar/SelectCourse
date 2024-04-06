@@ -12,7 +12,7 @@ public class OpenBrowser implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(OpenBrowser.class);
 
     @Value("${open.browser.url}")
-    private String url;
+    private String url; //url = 'http://localhost:8888/end/page/login.html'
 
     @Override
     public void run(String... args) throws Exception {

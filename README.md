@@ -257,3 +257,7 @@ LEFT JOIN orders o ON u.user_id = o.user_id;
 
 
 为什么要用PageHelper这类第三方库？因为原生的Limit语句很不好用   a,b。从第a(从第0行开始包括第a行)行开始返回b条数据
+
+
+
+:disable，如果条件成立那么禁用
