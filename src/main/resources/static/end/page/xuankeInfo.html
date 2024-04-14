@@ -157,7 +157,7 @@
                                             <td v-if="user.level!==2">{{obj.status}}</td>
                                             <td v-if="user.level!==1">
                                                 <button class="btn btn-sm btn-danger" v-if="user.level===3" @click="del(obj.id)" :disabled="obj.status==='已开课'">取消选课</button>
-                                                <button class="btn btn-sm btn-success" v-if="user.level===2" @click="begin(obj)" :disabled="obj.status==='已开课'">查看</button>
+                                                <button class="btn btn-sm btn-success" v-if="user.level===2" @click="begin(obj)" :disabled="obj.status==='已开课'">开课</button>
                                             </td>
                                         </tr>
                                         </tbody>

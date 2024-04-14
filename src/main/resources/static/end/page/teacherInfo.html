@@ -290,7 +290,7 @@
                     axios.delete('/teacherInfo/'+id).then(res=>{
                         if (res.data.code==='0'){
                             msg("success","删除成功")
-                            _this.loadTable()
+                            _this.loadTablePage(1)
                         }else {
                             msg("error",res.data.msg)
                         }
@@ -309,7 +309,7 @@
                         if (res.data.code==='0'){
                             $('#mod').modal('hide')
                             msg("success","编辑成功")
-                            this.loadTable(1)
+                            this.loadTablePage(1)
                         }else {
                             msg("error",res.data.msg)
                         }
@@ -319,7 +319,7 @@
                         if (res.data.code==='0'){
                             $('#mod').modal('hide')
                             msg("success","新增成功")
-                            this.loadTable(1)
+                            this.loadTablePage(1)
                         }else {
                             msg("error",res.data.msg)
                         }
