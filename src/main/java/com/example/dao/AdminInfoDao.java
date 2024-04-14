@@ -20,6 +20,6 @@ public interface AdminInfoDao extends Mapper<AdminInfo> {
     @Select("select * from admin_info where name=#{name}")
     AdminInfo findByName(String name);
 
-    @Select("select * from admin_info where name like concat('%',#{name},'%')")
+    @Select("select * from admin_info where name like concat('%',#{name},'%')")  //%t%
     List<AdminInfo> findByNamePage(@Param("name") String name);
 }
