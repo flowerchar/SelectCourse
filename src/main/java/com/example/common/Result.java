@@ -45,6 +45,9 @@ public class Result<T> {
     }
 
     public void setCode(String code) {
+//        if (code>10000){
+//            return;
+//        }
         this.code = code;
     }
 

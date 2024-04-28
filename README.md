@@ -67,7 +67,7 @@
 
 ## 二、后端思想
 
-后端开发思想是MVC，这种思想存在于各种后端语言中。M代表数据，V代表视图，C代表控制器。当用户在前端地址栏请求一个url资源，那么首先会访问到控制器，控制器会对这次请求进行分析，比如是什么类型的请求GET?POST?，有没有带路径参数等等。处理好之后会交给M修改数据，最后通过V返回前端。比如一个请求是：POST /goods/update/?id=12，其中的Body参数为{price:999, inventory:20}，商家在管理端希望将编号为12的商品修改价格为999，库存为20件。控制器接收到该路径后交给mapper(java中调用mybatis)修改好数据，再通过V将更新后的数据返回给前端，让用户看到最新的状态
+后端开发思想是MVC，这种思想存在于各种后端语言中。M代表数据，V代表视图，C代表控制器。当用户在前端地址栏请求一个url资源，那么首先会访问到控制器，控制器会对这次请求进行分析，比如是什么类型的请求GET?POST?，有没有带路径参数等等。处理好之后会交给M修改数据，最后通过V返回前端。比如一个请求是：POST /goods/update/a/?id=12，其中的Body参数为{price:999, inventory:20}，商家在管理端希望将编号为12的商品修改价格为999，库存为20件。控制器接收到该路径后交给mapper(java中调用mybatis)修改好数据，再通过V将更新后的数据返回给前端，让用户看到最新的状态
 
 
 
@@ -135,7 +135,7 @@ user.name = "admin"
 
 > 软编码：比如开发一个贪吃蛇游戏，定义屏幕的宽度和高度
 >
-> int WIDTH,HEIGHT = 800 800      *
+> int WIDTH,HEIGHT = 600 800      *
 >
 > 那么在之后需要用到边界的时候，只需要引用变量就可以了，比如
 >
@@ -168,7 +168,7 @@ user.name = "admin"
 >
 > }模糊查询
 >
-> http://localhost:8888/collegeInfo/page/search?pageNum=1&pageSize=5
+> http://localhost:8888/collegeInfo/page/a?pageNum=1&pageSize=5
 
 - 在很多场景下，新增跟编辑是复用一个组件（因为数据基本一样），那么怎么区分是新增还是编辑？通过id。因为新增还没有把数据插入到数据库里面，那么就不存在id。但是对于编辑，数据是已经从数据库里面返回的，那么一定存在id
 - 软编码概念很广泛，包括数据库里面一张表存放另一张表的主键id来实现两张表关联
@@ -234,7 +234,7 @@ FULL OUTER JOIN table2 ON table1.column = table2.column;
 现在，我们可以使用左连接来获取每个用户及其订单信息。左连接将返回左表（users）中的所有行，并与右表（orders）中匹配的行相结合。如果某个用户没有订单，那么订单信息列将显示为 NULL。
 
 ```mysql
-sqlCopy codeSELECT u.username, o.order_id, o.product
+SELECT u.username, o.order_id, o.product
 FROM users u
 LEFT JOIN orders o ON u.user_id = o.user_id;
 ```
