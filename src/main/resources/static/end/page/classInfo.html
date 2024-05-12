@@ -152,7 +152,7 @@
                                             <td>{{obj.time}}</td>
                                             <td>{{obj.location}}</td>
                                             <td>{{obj.selectedNum}}</td>
-                                            <td v-if="user.level!==2">1
+                                            <td v-if="user.level!==2">12
                                                 <button class="btn btn-sm btn-primary" @click="init(obj)"  v-if="user.level===1">编辑</button>
                                                 <button class="btn btn-sm btn-danger" @click="del(obj.id)"  v-if="user.level===1">删除</button>
                                                 <button class="btn btn-sm btn-primary" @click="select(obj)" v-if="user.level===3" :disabled="obj.selectedNum===obj.requiredNum || obj.status==='已开课'" >选课</button>

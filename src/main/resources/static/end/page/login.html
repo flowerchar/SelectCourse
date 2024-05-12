@@ -95,6 +95,7 @@
                 this.user.verCode = ""
             },
             login(){
+                console.log(this.user)
                 axios.post('/login', this.user).then(res=>{
                     if (res.data.code == '0'){
                         let user = res.data.data;
