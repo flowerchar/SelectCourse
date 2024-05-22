@@ -44,6 +44,7 @@ public class StudentInfoController {
         return Result.success();
     }
 
+    ///studentInfo/id=13
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id){
         studentInfoService.deleteById(id);

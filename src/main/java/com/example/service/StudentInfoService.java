@@ -86,7 +86,7 @@ public class StudentInfoService {
             throw new CustomException(ResultCode.USER_EXIST_ERROR);
         }
         if (ObjectUtil.isEmpty(studentInfo.getPassword())){
-            studentInfo.setPassword("123456");
+            studentInfo.setPassword("123456");//这里就不是软编码了，修改的时候就很麻烦
         }
         studentInfoDao.insertSelective(studentInfo);
     }
