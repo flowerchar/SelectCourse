@@ -297,16 +297,71 @@ LEFT JOIN orders o ON u.user_id = o.user_id;
 - entity是在模态框里绑定各表单项的对象（不管是新增还是编辑）
 
 - 新增为空，编辑回显（新增重置数据|编辑复用数据）
+
 - 在注册界面以及管理员视角下都可以注册学生，这里应该统一密码
+
 - 不管是新增、编辑、修改，操作结束后应该定向到第一页
+
 - 同样的，应该在有更新操作的业务下，对各个字段做校验|最好把这种校验交给前端，因为交给后端会浪费请求资源。除非实在是需要查询数据库（比如注册业务），其他简单的校验放在前端
 
+- 只从数据获取层面，dao（data access object数据访问层）层互相关联跟原生SQL连接效果是一样的。参考student信息的分页接口（SQL），Major的分页（dao）
 
+- REST--Representational State Transfer|表现层状态转化
 
+  - GET
 
+  - POST
 
+  - PUT
 
+  - DELETE
 
+  - | **操作** | **普通CRUD(根据uri区分)**       | **REST风格CRUD(根据请求方式区分)**           |
+    | -------- | ------------------------------- | -------------------------------------------- |
+    | 查询     | localhost:8080/tiger/findUsers  | localhost:8080/tiger/user-----get方式请求    |
+    | 添加     | localhost:8080/tiger/saveUser   | localhost:8080/tiger/user-----post方式请求   |
+    | 修改     | localhost:8080/tiger/updateUser | localhost:8080/tiger/user-----pup方式请求    |
+    | 删除     | localhost:8080/tiger/deleteUser | localhost:8080/tiger/user-----delete方式请求 |
+
+  - | **操作**         | **举例**                                                     |
+    | ---------------- | ------------------------------------------------------------ |
+    | 查询所有用户     | @GetMapping("user")   public String findUsers() {            |
+    | 根据 id 查询用户 | @GetMapping("user/{id}")   public String findUserById**(@PathVariable** Integer id) { |
+    | 添加用户         | @PostMapping("user")   public String saveUser(@ResquestBody User user) { |
+    | 修改用户         | @PutMapping("user")   public String updateUser(@ResquestBody User user) { |
+    | 根据 id 删除用户 | @DeleteMapping("user/{id}")   public String deleteUser(@PathVariable(name = "id") Integer id) { |
+
+  - 需要将传入到后端的json对象识别为java对象加@ResquestBody，需要将响应的java对象转变为json交给前端加@ResponseBody（非controller层需要这样），service层遇到错误，直接抛出异常，然后交给全局异常处理器
+
+  - 注解加到
+
+    - 类，比如一级路由
+    - 参数，比如路径参数或者ResquestBody
+    - 方法，比如二级路由或者ResponseBody
+
+- 前后端总结
+
+  - REST
+  - SQL（连接、limit）
+  - vue响应式数据
+  - 编辑约等于新增（有无主键id）
+  - 后端MVC架构
+  - 统一结果返回类
+  - 软编码（枚举类、多表关联）
+  - Springboot项目工程结构
+  - 在信息页面实现**更新操作**，要查询加载第一页数据
+  - 多种后端常见注解
+  - 业务逻辑（学生选课，老师确定，管理员编辑、应该对新增/编辑的信息校验、同一门课不能多选、所学课程超出最大人数不能选课）
+  - vue常见指令：v-for变量、v-if选择性渲染、:disable是否禁用状态
+  - 前端登录校验后localStorage缓存、后端校验后缓存到session
+  - 查询参数可以为多种（一个id、空等等），删除带一个id或数组（批量删除），新增和编辑绝大多数带对象作为参数
+  - 参数传递的三种方式
+  - 全局异常处理器
+  - 拦截器的概念（拦截什么，对哪些拦截）
+  - 很难实现的业务交给其他编程语言处理，通过cmd交互
+  - java实体类==数据库的表==前端表单（属性、字段、表单项）
+  - java部分语法（接口、泛型、多态|基类）
+  - 类复用（角色基类）、组件复用（id区别新增|编辑）、页面复用（level区别权限）->方便维护|减少代码量
 
 
 

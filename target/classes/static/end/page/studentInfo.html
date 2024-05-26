@@ -346,7 +346,7 @@
                     axios.delete('/studentInfo/'+id).then(res=>{
                         if (res.data.code==='0'){
                             msg("success","删除成功")
-                            _this.loadTable()//这里预留了一个bug
+                            _this.loadTable(1)//这里预留了一个bug
                         }else {
                             msg("error",res.data.msg)
                         }
